@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhoenixGas | Instalaciones de Gas Certificadas en Bolivia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+    /* ============================================================
+       VARIABLES DE COLOR Y TIPOGRAFÍA
+       Cambia aquí los colores principales de toda la página
+    ============================================================ */
+    :root {
+        --ink:        #0c1b2e;   /* Azul oscuro principal */
+        --ink-soft:   #16314f;   /* Azul oscuro secundario */
+        --flame:      #ff6a2b;   /* Naranja principal */
+        --flame-soft: #ffb38a;   /* Naranja claro */
+        --gas-blue:   #2dd4ff;   /* Azul gas (acento) */
+        --paper:      #f4f7fb;   /* Fondo gris claro */
+        --white:      #ffffff;
+        --text:       #33415a;   /* Texto principal */
+        --text-dim:   #6b7d96;   /* Texto secundario */
+        --whatsapp:   #25D366;
+        --radius:     14px;
+        --max-width:  1180px;
+    }
+
+    /* ============================================================
+       RESET Y BASE
+    ============================================================ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+        font-family: 'Inter', sans-serif;
+        color: var(--text);
+        background: var(--paper);
+        line-height: 1.65;
+    }
+    h1, h2, h3, h4 {
+        font-family: 'Space Grotesk', sans-serif;
+        color: var(--ink);
+        line-height: 1.15;
+    }
+    a { color: inherit; }
+    img { display: block; max-width: 100%; }
+    .container {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    /* ============================================================
+       BOTONES
+    ============================================================ */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 30px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: transform .25s ease, box-shadow .25s ease;
+        white-space: nowrap;
+    }
+    .btn-flame {
+        background: linear-gradient(135deg, var(--flame), #ff8a4c);
+        color: #fff;
+        box-shadow: 0 10px 24px -8px rgba(255,106,43,.6);
+    }
+    .btn-flame:hover { transform: translateY(-3px); }
+    .btn-whatsapp {
+        background: var(--whatsapp);
+        color: #fff;
+        box-shadow: 0 10px 24px -8px rgba(37,211,102,.55);
+    }
+    .btn-whatsapp:hover { transform: translateY(-3px); }
+    .btn-ghost {
+        background: transparent;
+        color: #fff;
+        border: 1.5px solid rgba(255,255,255,.35);
+    }
+    .btn-ghost:hover { border-color: var(--flame); color: var(--flame-soft); }
+
+    /* ============================================================
+       BOTÓN FLOTANTE WHATSAPP
+    ============================================================ */
+    .whatsapp-floating {
+        position: fixed;
+        bottom: 26px;
+        right: 26px;
+        background: var(--whatsapp);
+        color: #fff;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.25);
+        z-index: 999;
+        text-decoration: none;
+        animation: pulse 2.6s infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { box-shadow: 0 8px 24px rgba(37,211,102,.35); }
+        50%       { box-shadow: 0 8px 30px rgba(37,211,102,.65), 0 0 0 10px rgba(37,211,102,.08); }
+    }
+    .whatsapp-floating:hover { transform: scale(1.08); }
+
+    /* ============================================================
+       HEADER / NAVEGACIÓN
+    ============================================================ */
+    header {
+        background: var(--ink);
+        position: sticky;
+        top: 0;
+        z-index: 500;
+        border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+        gap: 20px;
+    }
+    .logo {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .logo img {
+        height: 42px;
+        width: 42px;
+        object-fit: contain;
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+    .logo span { color: var(--flame); }
+    nav.links {
+        display: flex;
+        gap: 26px;
+        font-size: 14.5px;
+        font-weight: 500;
+    }
+    nav.links a {
+        color: #cbd9ec;
+        text-decoration: none;
+        transition: color .2s;
+    }
+    nav.links a:hover { color: var(--flame-soft); }
+    .nav-cta { display: flex; align-items: center; gap: 14px; }
+    .emergency-tag {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--flame-soft);
+        font-size: 13px;
+        font-weight: 600;
+    }
+    .emergency-tag i { color: var(--flame); }
+
+    /* ============================================================
+       HERO (SECCIÓN PRINCIPAL)
+    ============================================================ */
+    .hero {
+        background:
+            radial-gradient(circle at 85% 15%, rgba(255,106,43,.25), transparent 45%),
+            radial-gradient(circle at 10% 90%, rgba(45,212,255,.12), transparent 50%),
+            linear-gradient(160deg, var(--ink) 0%, var(--ink-soft) 100%);
+        color: #fff;
+        padding: 90px 0 100px;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 2px, transparent 2px 38px);
+        pointer-events: none;
+    }
+    .hero-grid {
+        display: grid;
+        grid-template-columns: 1.1fr .9fr;
+        gap: 60px;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+    .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255,106,43,.12);
+        border: 1px solid rgba(255,106,43,.3);
+        color: var(--flame-soft);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        padding: 8px 16px;
+        border-radius: 999px;
+        margin-bottom: 24px;
+    }
+    .hero-text h1 { font-size: 48px; margin-bottom: 22px; font-weight: 700; }
+    .hero-text h1 .accent { color: var(--flame); }
+    .hero-text p { font-size: 18px; color: #b7c8de; margin-bottom: 34px; max-width: 520px; }
+    .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
+    .hero-stats { display: flex; gap: 36px; flex-wrap: wrap; }
+    .hero-stat .num {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 30px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .hero-stat .num span { color: var(--flame); }
+    .hero-stat .label { font-size: 13px; color: #93a8c4; text-transform: uppercase; letter-spacing: .08em; }
+
+    /* Dial decorativo del hero */
+    .hero-visual { display: flex; align-items: center; justify-content: center; }
+    .gauge {
+        width: 100%;
+        max-width: 400px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, #1f3a5c, #0c1b2e 70%);
+        border: 1px solid rgba(255,255,255,.08);
+        box-shadow: 0 30px 80px -20px rgba(255,106,43,.35), inset 0 0 60px rgba(0,0,0,.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .gauge::before {
+        content: '';
+        position: absolute;
+        width: 86%; height: 86%;
+        border-radius: 50%;
+        border: 2px dashed rgba(45,212,255,.18);
+    }
+    .gauge-inner {
+        width: 62%; height: 62%;
+        border-radius: 50%;
+        background: var(--ink);
+        border: 6px solid var(--ink-soft);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-shadow: inset 0 0 30px rgba(0,0,0,.6);
+        overflow: hidden;
+        padding: 10px;
+    }
+    .gauge-inner img {
+        width: 72px; height: 72px;
+        object-fit: contain;
+        margin-bottom: 8px;
+    }
+    .gauge-inner .gauge-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        color: #fff;
+    }
+    .gauge-inner .gauge-sub {
+        font-size: 11px;
+        color: #93a8c4;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        margin-top: 2px;
+    }
+    .gauge-tick {
+        position: absolute;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--gas-blue);
+        letter-spacing: .06em;
+    }
+    .gauge-tick.t1 { top: 6%;  left: 50%; transform: translateX(-50%); }
+    .gauge-tick.t2 { bottom: 8%; left: 10%; }
+    .gauge-tick.t3 { bottom: 8%; right: 8%; }
+
+    /* ============================================================
+       SECCIONES — CABECERA COMÚN
+    ============================================================ */
+    section { padding: 88px 0; }
+    .section-head {
+        text-align: center;
+        max-width: 640px;
+        margin: 0 auto 54px;
+    }
+    .section-eyebrow {
+        display: inline-block;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--flame);
+        margin-bottom: 12px;
+    }
+    .section-head h2 { font-size: 33px; margin-bottom: 14px; }
+    .section-head p  { color: var(--text-dim); font-size: 16px; }
+
+    /* ============================================================
+       SERVICIOS
+    ============================================================ */
+    .services { background: var(--paper); }
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 26px;
+    }
+    .service-card {
+        background: var(--white);
+        padding: 34px 28px;
+        border-radius: var(--radius);
+        border: 1px solid #e7edf6;
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+    .service-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px -24px rgba(12,27,46,.2);
+        border-color: var(--flame-soft);
+    }
+    .service-icon {
+        width: 56px; height: 56px;
+        border-radius: 13px;
+        background: linear-gradient(135deg, #fff1ea, #ffe2d2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: var(--flame);
+        margin-bottom: 20px;
+    }
+    .service-card h3 { font-size: 18px; margin-bottom: 10px; }
+    .service-card p  { font-size: 15px; color: var(--text-dim); }
+
+    /* ============================================================
+       SHOWCASE (POR QUÉ ELEGIRNOS)
+    ============================================================ */
+    .showcase { background: var(--white); }
+    .showcase-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        margin-bottom: 80px;
+    }
+    .showcase-grid:last-child { margin-bottom: 0; }
+    .showcase-grid.reverse .showcase-text { order: 2; }
+    .showcase-grid.reverse .media-placeholder { order: 1; }
+    .showcase-text .section-eyebrow { display: block; margin-bottom: 12px; }
+    .showcase-text h3 { font-size: 26px; margin-bottom: 14px; }
+    .showcase-text p  { color: var(--text-dim); font-size: 16px; margin-bottom: 22px; }
+    .check-list { list-style: none; margin-bottom: 24px; }
+    .check-list li {
+        display: flex; gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 12px;
+        font-size: 15px;
+    }
+    .check-list i { color: var(--flame); margin-top: 3px; }
+    .media-placeholder {
+        background: linear-gradient(160deg, var(--ink), var(--ink-soft));
+        border: 1px dashed rgba(255,255,255,.18);
+        border-radius: var(--radius);
+        aspect-ratio: 16 / 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #93a8c4;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        padding: 20px;
+    }
+    .media-placeholder img,
+    .media-placeholder video,
+    .media-placeholder iframe {
+        position: absolute; inset: 0;
+        width: 100%; height: 100%;
+        object-fit: cover; border: none;
+    }
+    .media-placeholder > i   { font-size: 36px; margin-bottom: 12px; color: var(--flame-soft); }
+    .media-placeholder > p   { font-size: 14px; color: #93a8c4; max-width: 280px; }
+
+    /* ============================================================
+       GALERÍA DE TRABAJOS (CARRUSEL HORIZONTAL)
+    ============================================================ */
+    .gallery { background: var(--paper); }
+    .carousel-track {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        padding-bottom: 14px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .carousel-track::-webkit-scrollbar { display: none; }
+    .gallery-item {
+        flex: 0 0 calc(33.333% - 14px);
+        scroll-snap-align: start;
+        aspect-ratio: 4/3;
+        border-radius: var(--radius);
+        background: linear-gradient(160deg, #1f3a5c, var(--ink));
+        border: 1px dashed rgba(255,255,255,.18);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #93a8c4;
+        text-align: center;
+        padding: 16px;
+        position: relative;
+        overflow: hidden;
+    }
+    .gallery-item img {
+        position: absolute; inset: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
+    }
+    .gallery-item i    { font-size: 30px; color: var(--flame-soft); margin-bottom: 10px; }
+    .gallery-item span { font-size: 13px; }
+    .carousel-controls {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        margin-top: 26px;
+    }
+    .carousel-btn {
+        width: 46px; height: 46px;
+        border-radius: 50%;
+        border: 1px solid #d6e0ee;
+        background: var(--white);
+        color: var(--ink);
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all .2s ease;
+    }
+    .carousel-btn:hover { background: var(--flame); color: #fff; border-color: var(--flame); }
+
+    /* ============================================================
+       TESTIMONIOS (CARRUSEL INFINITO)
+    ============================================================ */
+    .testimonials {
+        background: linear-gradient(160deg, var(--ink) 0%, var(--ink-soft) 100%);
+        color: #fff;
+    }
+    .testimonials .section-head h2 { color: #fff; }
+    .testimonials .section-head p  { color: #aebedb; }
+
+    .testi-outer {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        max-width: 860px;
+        margin: 0 auto;
+    }
+    .testi-window {
+        flex: 1;
+        overflow: hidden;
+        border-radius: var(--radius);
+    }
+    .testi-track { display: flex; width: 100%; }
+    .testi-slide {
+        flex: 0 0 100%;
+        width: 100%;
+        background: rgba(255,255,255,.05);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: var(--radius);
+        padding: 44px 48px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    .testi-stars  { color: var(--flame); font-size: 20px; margin-bottom: 20px; letter-spacing: 5px; }
+    .testi-quote  { font-size: 17px; line-height: 1.75; color: #dce8f5; margin-bottom: 28px; font-style: italic; }
+    .testi-quote::before { content: '\201C'; }
+    .testi-quote::after  { content: '\201D'; }
+    .testi-author { font-weight: 700; font-family: 'Space Grotesk', sans-serif; color: #fff; font-size: 16px; }
+    .testi-role   { font-size: 13px; color: #93a8c4; margin-top: 4px; }
+
+    .testi-nav-btn {
+        flex-shrink: 0;
+        width: 48px; height: 48px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.07);
+        border: 1px solid rgba(255,255,255,.18);
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        transition: background .2s, border-color .2s;
+    }
+    .testi-nav-btn:hover { background: var(--flame); border-color: var(--flame); }
+
+    .testi-dots { display: flex; justify-content: center; gap: 10px; margin-top: 26px; }
+    .testi-dot {
+        width: 9px; height: 9px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.22);
+        cursor: pointer;
+        border: none;
+        transition: background .25s, transform .25s;
+    }
+    .testi-dot.active { background: var(--flame); transform: scale(1.25); }
+
+    /* ============================================================
+       PREGUNTAS FRECUENTES (FAQ)
+    ============================================================ */
+    .faq { background: var(--white); }
+    .faq-list {
+        max-width: 780px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+    .faq-item {
+        border: 1px solid #e7edf6;
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--white);
+    }
+    .faq-question {
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: left;
+        padding: 22px 26px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--ink);
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+    }
+    .faq-question i { color: var(--flame); transition: transform .3s; flex-shrink: 0; }
+    .faq-item.open .faq-question i { transform: rotate(45deg); }
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .35s ease, padding .35s ease;
+        padding: 0 26px;
+        color: var(--text-dim);
+        font-size: 15px;
+    }
+    .faq-item.open .faq-answer { max-height: 320px; padding: 0 26px 24px; }
+
+    /* ============================================================
+       LLAMADA A LA ACCIÓN FINAL
+    ============================================================ */
+    .cta-final {
+        background: linear-gradient(135deg, var(--flame), #ff8a4c);
+        color: #fff;
+        text-align: center;
+    }
+    .cta-final h2 { color: #fff; font-size: 32px; margin-bottom: 14px; }
+    .cta-final p  { color: rgba(255,255,255,.9); margin-bottom: 30px; font-size: 16px; }
+    .cta-buttons  { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .cta-final .btn-ink {
+        background: var(--ink);
+        color: #fff;
+        box-shadow: 0 10px 24px -8px rgba(0,0,0,.4);
+    }
+    .cta-final .btn-ink:hover { transform: translateY(-3px); }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+        background: var(--ink);
+        color: #cbd9ec;
+        padding: 70px 0 30px;
+    }
+    .footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+        gap: 50px;
+        margin-bottom: 50px;
+    }
+    .footer-col h4 {
+        color: #fff;
+        font-size: 13px;
+        margin-bottom: 18px;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+    }
+    .footer-col p { font-size: 14px; color: #93a8c4; margin-bottom: 18px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a {
+        color: #93a8c4;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color .2s;
+    }
+    .footer-col ul a:hover { color: var(--flame-soft); }
+    .footer-social { display: flex; gap: 12px; }
+    .footer-social a {
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,.12);
+        display: flex; align-items: center; justify-content: center;
+        color: #cbd9ec;
+        text-decoration: none;
+        transition: all .2s;
+    }
+    .footer-social a:hover { background: var(--flame); border-color: var(--flame); color: #fff; }
+    .footer-bottom {
+        border-top: 1px solid rgba(255,255,255,.08);
+        padding-top: 26px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 13px;
+        color: #7e93b3;
+    }
+    .footer-bottom a { color: #7e93b3; text-decoration: none; }
+    .footer-bottom a:hover { color: var(--flame-soft); }
+    .footer-legal-links { display: flex; gap: 22px; flex-wrap: wrap; }
+
+    /* ============================================================
+       PÁGINAS LEGALES (se muestran/ocultan con JS)
+    ============================================================ */
+    .legal-page { display: none; background: var(--paper); padding: 110px 0 90px; }
+    .legal-page.active { display: block; }
+    .legal-page .container { max-width: 820px; }
+    .legal-page h1 { font-size: 30px; margin-bottom: 8px; }
+    .legal-page .updated { color: var(--text-dim); font-size: 14px; margin-bottom: 40px; }
+    .legal-page h2 { font-size: 20px; margin: 32px 0 12px; }
+    .legal-page p, .legal-page li { color: var(--text); font-size: 15px; margin-bottom: 10px; }
+    .legal-page ul { padding-left: 20px; margin-bottom: 10px; }
+    .legal-back {
+        display: inline-flex; align-items: center; gap: 8px;
+        color: var(--flame); text-decoration: none;
+        font-weight: 600; margin-bottom: 30px; font-size: 14px;
+    }
+    .site-main.hidden { display: none; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 980px) {
+        nav.links { display: none; }
+        .hero-grid { grid-template-columns: 1fr; }
+        .hero-visual { order: -1; max-width: 280px; margin: 0 auto; }
+        .showcase-grid, .showcase-grid.reverse { grid-template-columns: 1fr; }
+        .showcase-grid.reverse .showcase-text,
+        .showcase-grid.reverse .media-placeholder { order: initial; }
+        .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+    }
+    @media (max-width: 640px) {
+        .hero-text h1   { font-size: 32px; }
+        section         { padding: 64px 0; }
+        .section-head h2 { font-size: 26px; }
+        .testi-slide    { padding: 28px 20px; }
+        .testi-quote    { font-size: 15px; }
+        .testi-nav-btn  { width: 40px; height: 40px; }
+        .footer-grid    { grid-template-columns: 1fr; gap: 32px; }
+        .footer-bottom  { flex-direction: column; }
+        .emergency-tag  { display: none; }
+        .gallery-item   { flex: 0 0 calc(50% - 10px); }
+    }
+    @media (max-width: 440px) {
+        .gallery-item { flex: 0 0 85%; }
+    }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     BOTÓN FLOTANTE DE WHATSAPP
+     → Cambia TU_NUMERO_AQUI por tu número (ej: 59170000000)
+============================================================ -->
+<a href="https://wa.link/uqmwdd?text=Hola%2C%20solicito%20informaci%C3%B3n%20sobre%20instalaci%C3%B3n%20de%20gas"
+   class="whatsapp-floating" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+
+<!-- ============================================================
+     HEADER — NAVEGACIÓN
+     → Cambia el número de WhatsApp del botón "Cotizar"
+     → Cambia el teléfono de emergencias si es necesario
+============================================================ -->
+<header>
+    <div class="container nav-container">
+
+        <!-- LOGO -->
+        <a href="#inicio" class="logo">
+            <img src="logo_fenix.jpg" alt="Logo PhoenixGas">
+            Phoenix<span>Gas</span>
+        </a>
+
+        <!-- MENÚ -->
+        <nav class="links">
+            <a href="#servicios">Servicios</a>
+            <a href="#confianza">Por qué elegirnos</a>
+            <a href="#trabajos">Trabajos</a>
+            <a href="#testimonios">Testimonios</a>
+            <a href="#faq">Preguntas frecuentes</a>
+        </nav>
+
+        <!-- TELÉFONO + BOTÓN -->
+        <div class="nav-cta">
+            <span class="emergency-tag">
+                <i class="fa-solid fa-headset"></i>
+                Emergencias 24h: 800 12 81 81 (YPFB)
+            </span>
+            <a href="https://wa.link/uqmwdd?text=Hola%2C%20quiero%20cotizar%20un%20servicio"
+               class="btn btn-whatsapp" target="_blank">
+                <i class="fab fa-whatsapp"></i> Cotizar
+            </a>
+        </div>
+
+    </div>
+</header>
+
+
+<main class="site-main">
+
+<!-- ============================================================
+     HERO — SECCIÓN PRINCIPAL
+     → Cambia el título, subtítulo y estadísticas
+     → Cambia el número de WhatsApp en los botones
+============================================================ -->
+<section class="hero" id="inicio">
+    <div class="container hero-grid">
+
+        <!-- TEXTO PRINCIPAL -->
+        <div class="hero-text">
+            <span class="eyebrow">
+                <i class="fa-solid fa-certificate"></i>
+                Técnicos certificados · Bolivia
+            </span>
+
+            <h1>
+                Instalaciones de gas hechas para
+                <span class="accent">durar y proteger</span>
+            </h1>
+
+            <p>
+                Diseñamos, instalamos y mantenemos redes de gas domiciliarias,
+                comerciales e industriales bajo normativa vigente, con pruebas
+                de hermeticidad documentadas en cada entrega.
+            </p>
+
+            <div class="hero-cta-group">
+                <a href="https://wa.link/uqmwdd?text=Hola%2C%20necesito%20una%20inspecci%C3%B3n"
+                   class="btn btn-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Agendar inspección gratis
+                </a>
+                <a href="#servicios" class="btn btn-ghost">
+                    Ver servicios <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- ESTADÍSTICAS — editar los números aquí -->
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="num"><span>7+</span> años</div>
+                    <div class="label">de experiencia</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num"><span>100%</span></div>
+                    <div class="label">pruebas certificadas</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num"><span>12</span>h</div>
+                    <div class="label">atención</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DIAL DECORATIVO CON LOGO -->
+        <div class="hero-visual">
+            <div class="gauge">
+                <span class="gauge-tick t1">ALTA PRESIÓN</span>
+                <span class="gauge-tick t2">SEGURO</span>
+                <span class="gauge-tick t3">CERTIFICADO</span>
+                <div class="gauge-inner">
+                    <img src="logo_fenix.jpg" alt="PhoenixGas">
+                    <div class="gauge-title">PhoenixGas</div>
+                    <div class="gauge-sub">Presión bajo control</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     SERVICIOS
+     → Agrega, quita o edita las tarjetas aquí
+     → Cambia el ícono (busca en fontawesome.com)
+============================================================ -->
+<section class="services" id="servicios">
+    <div class="container">
+
+        <div class="section-head">
+            <span class="section-eyebrow">Lo que hacemos</span>
+            <h2>Servicios especializados en gas</h2>
+            <p>Desde la cocina de tu hogar hasta la línea de producción de tu planta: una sola empresa, un solo estándar de seguridad.</p>
+        </div>
+
+        <div class="services-grid">
+
+            <!-- TARJETA 1 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                <h3>Instalaciones domésticas</h3>
+                <p>Instalaciones internas de gas, conexión de cocinas, termotanques, calefones y estufas, con acabados limpios y total seguridad para tu familia.</p>
+            </div>
+
+            <!-- TARJETA 2 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-building"></i></div>
+                <h3>Gas domiciliar, comercial e industrial</h3>
+                <p>Diseño y ejecución de proyectos de gran envergadura para restaurantes, edificios, condominios y plantas industriales.</p>
+            </div>
+
+            <!-- TARJETA 3 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>Mantenimiento y detección de fugas</h3>
+                <p>Inspección preventiva, pruebas de hermeticidad y reparación inmediata de sistemas defectuosos por personal calificado.</p>
+            </div>
+
+            <!-- TARJETA 4 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                <h3>Regulación y medición</h3>
+                <p>Instalación y calibración de reguladores, medidores y válvulas de seguridad homologadas para cada tipo de instalación.</p>
+            </div>
+
+            <!-- TARJETA 5 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-file-circle-check"></i></div>
+                <h3>Asesoría y certificación</h3>
+                <p>Te acompañamos en los trámites de habilitación y emitimos certificados de prueba de presión.</p>
+            </div>
+
+            <!-- TARJETA 6 -->
+            <div class="service-card">
+                <div class="service-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                <h3>Atención de emergencias</h3>
+                <p>Olor a gas, fugas o fallas urgentes: nuestro equipo responde los 7 días de la semana.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     POR QUÉ ELEGIRNOS
+     → Reemplaza los comentarios de media-placeholder
+       con tu imagen o iframe de YouTube
+============================================================ -->
+<section class="showcase" id="confianza">
+    <div class="container">
+
+        <div class="section-head">
+            <span class="section-eyebrow">Confianza y seguridad</span>
+            <h2>¿Por qué elegir PhoenixGas?</h2>
+            <p>No arriesgues el patrimonio de tu familia o negocio. Así trabajamos.</p>
+        </div>
+
+        <!-- BLOQUE 1: texto izquierda, video/imagen derecha -->
+        <div class="showcase-grid">
+            <div class="showcase-text">
+                <span class="section-eyebrow">Normas estrictas</span>
+                <h3>Pruebas de presión y hermeticidad en cada obra</h3>
+                <p>Antes de entregar cualquier instalación, sometemos la red completa a pruebas de presión documentadas. Así garantizamos que no existan fugas ni puntos débiles.</p>
+                <ul class="check-list">
+                    <li><i class="fa-solid fa-circle-check"></i> Prueba de hermeticidad con manómetro certificado</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Registro fotográfico y certificado de prueba</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Verificación final con el cliente presente</li>
+                </ul>
+                <a href="https://wa.link/uqmwdd?text=Hola%2C%20quiero%20saber%20m%C3%A1s%20de%20sus%20certificaciones"
+                   class="btn btn-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Hablar con un técnico
+                </a>
+            </div>
+
+            <!-- REEMPLAZA ESTE BLOQUE CON TU VIDEO/IMAGEN -->
+            <div class="media-placeholder">
+                <i class="fa-solid fa-video"></i>
+                <p>Video demostrativo de pruebas de presión</p>
+                <!-- Para YouTube: descomenta y pon tu ID de video -->
+                <!-- <iframe src="https://www.youtube.com/embed/TU_ID_VIDEO" allowfullscreen></iframe> -->
+                <!-- Para imagen: descomenta y pon tu ruta -->
+                <!-- <img src="tu-foto.jpg" alt="Prueba de presión"> -->
+            </div>
+        </div>
+
+        <!-- BLOQUE 2: imagen izquierda, texto derecha -->
+        <div class="showcase-grid reverse">
+            <div class="showcase-text">
+                <span class="section-eyebrow">Materiales y equipo</span>
+                <h3>Materiales de primera y personal calificado</h3>
+                <p>Utilizamos tuberías, accesorios y reguladores homologados de marcas reconocidas. Todo nuestro equipo cuenta con licencias y certificaciones oficiales actualizadas.</p>
+                <ul class="check-list">
+                    <li><i class="fa-solid fa-circle-check"></i> Tuberías y accesorios con normativa vigente</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Técnicos con licencia y capacitación continua</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Garantía escrita en mano de obra y materiales</li>
+                </ul>
+            </div>
+
+            <!-- REEMPLAZA ESTE BLOQUE CON TU FOTO -->
+            <div class="media-placeholder">
+                <i class="fa-regular fa-images"></i>
+                <p>Foto de materiales certificados o equipo de trabajo</p>
+                <!-- <img src="tu-foto-materiales.jpg" alt="Materiales certificados"> -->
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     GALERÍA DE TRABAJOS
+     → Para agregar una foto real, reemplaza el contenido
+       del .gallery-item con: <img src="tu-foto.jpg" alt="...">
+     → Puedes agregar o quitar .gallery-item según necesites
+============================================================ -->
+<section class="gallery" id="trabajos">
+    <div class="container">
+
+        <div class="section-head">
+            <span class="section-eyebrow">Nuestro trabajo</span>
+            <h2>Proyectos realizados</h2>
+            <p>Una muestra de instalaciones y obras terminadas. Reemplaza los espacios con tus fotos reales.</p>
+        </div>
+
+        <div class="carousel-track" id="galleryTrack">
+
+            <!-- FOTO 1 — reemplaza con <img src="..."> cuando tengas la foto -->
+            <div class="gallery-item">
+                <i class="fa-solid fa-image"></i>
+                <span>Foto proyecto 1</span>
+                <!-- <img src="foto-1.jpg" alt="Instalación residencial"> -->
+            </div>
+
+            <!-- FOTO 2 -->
+            <div class="gallery-item">
+                <i class="fa-solid fa-image"></i>
+                <span>Foto proyecto 2</span>
+                <!-- <img src="foto-2.jpg" alt="Instalación comercial"> -->
+            </div>
+
+            <!-- FOTO 3 -->
+            <div class="gallery-item">
+                <i class="fa-solid fa-image"></i>
+                <span>Foto proyecto 3</span>
+                <!-- <img src="foto-3.jpg" alt="Mantenimiento"> -->
+            </div>
+
+            <!-- FOTO 4 -->
+            <div class="gallery-item">
+                <i class="fa-solid fa-image"></i>
+                <span>Foto proyecto 4</span>
+                <!-- <img src="foto-4.jpg" alt="Instalación industrial"> -->
+            </div>
+
+            <!-- FOTO 5 -->
+            <div class="gallery-item">
+                <i class="fa-solid fa-image"></i>
+                <span>Foto proyecto 5</span>
+                <!-- <img src="foto-5.jpg" alt="Prueba de hermeticidad"> -->
+            </div>
+
+            <!-- FOTO 6 -->
+            <div class="gallery-item">
+                <i class="fa-solid fa-image"></i>
+                <span>Foto proyecto 6</span>
+                <!-- <img src="foto-6.jpg" alt="Detalle de instalación"> -->
+            </div>
+
+        </div>
+
+        <div class="carousel-controls">
+            <button class="carousel-btn" onclick="scrollGallery(-1)" aria-label="Anterior">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="carousel-btn" onclick="scrollGallery(1)" aria-label="Siguiente">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     TESTIMONIOS (CARRUSEL INFINITO)
+     → Edita cada .testi-slide con el testimonio real
+     → Puedes agregar más .testi-slide antes del cierre del track
+============================================================ -->
+<section class="testimonials" id="testimonios">
+    <div class="container">
+
+        <div class="section-head">
+            <span class="section-eyebrow" style="color: var(--flame-soft);">Clientes satisfechos</span>
+            <h2>Lo que dicen quienes confiaron en nosotros</h2>
+            <p>Historias reales de hogares y negocios que ya trabajan con PhoenixGas.</p>
+        </div>
+
+        <div class="testi-outer">
+
+            <button class="testi-nav-btn" id="testiPrev" aria-label="Anterior">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="testi-window">
+                <div class="testi-track" id="testiTrack">
+
+                    <!-- TESTIMONIO 1 -->
+                    <div class="testi-slide">
+                        <div class="testi-stars">★★★★★</div>
+                        <p class="testi-quote">El equipo llegó puntual, explicó cada paso de la instalación y al final nos mostró la prueba de presión en vivo. Quedamos muy tranquilos con la seguridad de nuestra casa.</p>
+                        <div class="testi-author">Familia Quiroga</div>
+                        <div class="testi-role">Instalación domiciliaria – Santa Cruz</div>
+                    </div>
+
+                    <!-- TESTIMONIO 2 -->
+                    <div class="testi-slide">
+                        <div class="testi-stars">★★★★★</div>
+                        <p class="testi-quote">Necesitábamos rediseñar toda la red de gas del restaurante sin parar la operación. PhoenixGas coordinó los trabajos por turnos y entregó todo certificado y dentro de plazo.</p>
+                        <div class="testi-author">Carlos Méndez</div>
+                        <div class="testi-role">Propietario, Restaurante Limón y Sal</div>
+                    </div>
+
+                    <!-- TESTIMONIO 3 -->
+                    <div class="testi-slide">
+                        <div class="testi-stars">★★★★★</div>
+                        <p class="testi-quote">Tuvimos una emergencia de fuga un domingo en la noche y respondieron en menos de una hora. Profesionales, ordenados y con todo el equipo necesario para resolverlo de inmediato.</p>
+                        <div class="testi-author">Lourdes Aguilar</div>
+                        <div class="testi-role">Administradora, Edificio Torre Sol</div>
+                    </div>
+
+                    <!-- TESTIMONIO 4 -->
+                    <div class="testi-slide">
+                        <div class="testi-stars">★★★★★</div>
+                        <p class="testi-quote">La planta requería una instalación industrial compleja con múltiples puntos de consumo. El trabajo de PhoenixGas fue impecable, con planos, certificados y garantía por escrito.</p>
+                        <div class="testi-author">Ing. Roberto Salazar</div>
+                        <div class="testi-role">Jefe de Mantenimiento, Planta Industrial Norte</div>
+                    </div>
+
+                </div><!-- fin testi-track -->
+            </div><!-- fin testi-window -->
+
+            <button class="testi-nav-btn" id="testiNext" aria-label="Siguiente">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+        </div><!-- fin testi-outer -->
+
+        <div class="testi-dots" id="testiDots"></div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     PREGUNTAS FRECUENTES
+     → Edita la pregunta en .faq-question (antes del <i>)
+     → Edita la respuesta dentro de .faq-answer
+     → Copia un bloque .faq-item para agregar más preguntas
+============================================================ -->
+<section class="faq" id="faq">
+    <div class="container">
+
+        <div class="section-head">
+            <span class="section-eyebrow">Dudas frecuentes</span>
+            <h2>Preguntas frecuentes</h2>
+            <p>Si tu duda no está aquí, escríbenos por WhatsApp y te respondemos directamente.</p>
+        </div>
+
+        <div class="faq-list">
+
+            <!-- PREGUNTA 1 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Cuánto tarda una instalación domiciliaria?
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Una instalación residencial estándar (cocina, calefón y termotanque) suele completarse en 1 a 2 días. Para proyectos comerciales o industriales, el plazo se define tras la visita de evaluación.</p>
+                </div>
+            </div>
+
+            <!-- PREGUNTA 2 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿La inspección inicial tiene costo?
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>No. La inspección y evaluación inicial para cotizar el trabajo es completamente gratuita. Solo se cobra una vez que apruebas el presupuesto y se inicia el trabajo.</p>
+                </div>
+            </div>
+
+            <!-- PREGUNTA 3 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Entregan certificado de prueba de hermeticidad?
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Sí. Todas nuestras instalaciones incluyen una prueba de presión documentada, con certificado que puedes presentar ante tu compañía de seguros, municipio o entidad reguladora.</p>
+                </div>
+            </div>
+
+            <!-- PREGUNTA 4 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué garantía ofrecen sobre los trabajos realizados?
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Ofrecemos garantía escrita sobre mano de obra y materiales instalados. El plazo y condiciones se detallan en el comprobante de servicio entregado al finalizar el trabajo.</p>
+                </div>
+            </div>
+
+            <!-- PREGUNTA 5 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Atienden emergencias fuera de horario?
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Sí, contamos con atención de emergencias disponible los 7 días de la semana, para fugas, olores a gas o fallas urgentes en el suministro.</p>
+                </div>
+            </div>
+
+            <!-- PREGUNTA 6 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Trabajan con GLP y gas natural?
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Sí, diseñamos e instalamos redes tanto para gas licuado de petróleo (GLP) como para gas natural domiciliario, adaptando materiales y reguladores según el tipo de suministro de tu zona.</p>
+                </div>
+            </div>
+
+            <!-- PREGUNTA 7 -->
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Cómo se realiza el pago?
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Aceptamos Qr , efectivo y transferencia bancaria. Todos los detalles se especifican antes de iniciar el trabajo.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     LLAMADA A LA ACCIÓN FINAL
+     → Cambia el texto, teléfono y número de WhatsApp
+============================================================ -->
+<section class="cta-final">
+    <div class="container">
+        <h2>¿Listo para una instalación segura?</h2>
+        <p>Agenda hoy tu inspección gratuita y recibe un presupuesto sin compromiso.</p>
+        <div class="cta-buttons">
+            <a href="https://wa.link/uqmwdd?text=Hola%2C%20quiero%20agendar%20una%20inspecci%C3%B3n%20gratuita"
+               class="btn btn-ink" target="_blank">
+                <i class="fab fa-whatsapp"></i> Escribir por WhatsApp
+            </a>
+        </div>
+    </div>
+</section>
+
+</main><!-- fin site-main -->
+
+
+<!-- ============================================================
+     FOOTER
+     → Edita datos de contacto, redes y columnas de links
+============================================================ -->
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+
+            <!-- COLUMNA 1: Logo y descripción -->
+            <div class="footer-col">
+                <a href="#inicio" class="logo" style="margin-bottom:16px; display:inline-flex;">
+                    <img src="logo_fenix.jpg" alt="Logo PhoenixGas">
+                    Phoenix<span>Gas</span>
+                </a>
+                <p>Instalaciones de gas domiciliarias, comerciales e industriales con personal certificado y materiales homologados.</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+         
+                    <a href="https://wa.link/uqmwdd" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <!-- COLUMNA 2: Navegación -->
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#confianza">Por qué elegirnos</a></li>
+                    <li><a href="#trabajos">Trabajos realizados</a></li>
+                    <li><a href="#testimonios">Testimonios</a></li>
+                    <li><a href="#faq">Preguntas frecuentes</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUMNA 3: Servicios -->
+            <div class="footer-col">
+                <h4>Servicios</h4>
+                <ul>
+                    <li><a href="#servicios">Instalaciones domésticas</a></li>
+                    <li><a href="#servicios">Gas comercial e industrial</a></li>
+                    <li><a href="#servicios">Mantenimiento y fugas</a></li>
+                    <li><a href="#servicios">Emergencias</a></li>
+                </ul>
+            </div>
+
+            <!-- COLUMNA 4: Contacto — editar datos aquí -->
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <ul>
+                    <li><i class="fa-solid fa-phone"></i>&nbsp; 800 12 81 81 (24h)(YPFB)</li>
+                    <li><i class="fa-brands fa-whatsapp"></i>&nbsp;
+                        <a href="https://wa.link/uqmwdd" target="_blank">Escribir por WhatsApp</a>
+                    </li>
+                    <li><i class="fa-solid fa-envelope"></i>&nbsp; phoenixgas01@gmail.com</li>
+                    <li><i class="fa-solid fa-location-dot"></i>&nbsp; Santa Cruz de la Sierra, Bolivia</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- BARRA INFERIOR -->
+        <div class="footer-bottom">
+            <p>&copy; 2018 PhoenixGas Instalaciones Profesionales. Todos los derechos reservados.</p>
+            <div class="footer-legal-links">
+                <a href="#" data-legal="terminos">Términos y condiciones</a>
+                <a href="#" data-legal="privacidad">Política de privacidad</a>
+                <a href="#" data-legal="garantia">Política de garantía</a>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+
+<!-- ============================================================
+     PÁGINA LEGAL: TÉRMINOS Y CONDICIONES
+============================================================ -->
+<div class="legal-page" id="legal-terminos">
+    <div class="container">
+        <a href="#" class="legal-back" data-legal-close="true">
+            <i class="fa-solid fa-arrow-left"></i> Volver al sitio
+        </a>
+        <h1>Términos y condiciones de servicio</h1>
+        <p class="updated">Última actualización: junio de 2026</p>
+
+        <h2>1. Alcance del servicio</h2>
+        <p>PhoenixGas presta servicios de diseño, instalación, mantenimiento, reparación y certificación de redes de gas domiciliarias, comerciales e industriales, dentro del territorio boliviano y bajo la normativa técnica vigente.</p>
+
+        <h2>2. Cotizaciones y presupuestos</h2>
+        <p>La inspección inicial es gratuita. Toda cotización tiene una vigencia de 15 días calendario. Los precios pueden variar si durante la ejecución se identifican condiciones no visibles al momento de la inspección. En tal caso, se informará al cliente antes de continuar.</p>
+
+        <h2>3. Condiciones de pago</h2>
+        <p>El pago puede realizarse mediante Qr, efectivo o transferencia bancaria. </p>
+
+        <h2>4. Garantía</h2>
+        <p>PhoenixGas garantiza la mano de obra y los materiales instalados por un período de 36 meses desde la fecha de entrega, cubriendo defectos de instalación, fugas o fallas atribuibles al trabajo realizado. La garantía no cubre:</p>
+        <ul>
+            <li>Daños por modificaciones realizadas por terceros tras la entrega.</li>
+            <li>Mal uso, negligencia o falta de mantenimiento por parte del cliente.</li>
+            <li>Daños causados por fenómenos naturales o fuerza mayor.</li>
+            <li>Equipos no instalados por PhoenixGas.</li>
+        </ul>
+
+        <h2>5. Responsabilidades del cliente</h2>
+        <p>El cliente se compromete a brindar acceso seguro al área de trabajo e informar sobre instalaciones preexistentes que puedan afectar la obra.</p>
+
+        <h2>6. Cancelaciones y reprogramaciones</h2>
+        <p>Las citas pueden reprogramarse sin costo si se notifica con al menos 12 horas de anticipación. Cancelaciones con menos de 12 horas de aviso pueden generar un cargo por desplazamiento.</p>
+
+        <h2>7. Emergencias</h2>
+        <p>El servicio de emergencias 24 horas atiende casos de fuga, olor a gas o riesgo inminente. El costo de atención fuera de horario regular puede incluir un recargo, el cual se comunica al cliente antes del desplazamiento.</p>
+
+        <h2>8. Modificaciones de estos términos</h2>
+        <p>PhoenixGas podrá actualizar estos términos en cualquier momento. La versión vigente será siempre la publicada en este sitio web.</p>
+
+        <h2>9. Contacto</h2>
+        <p>Para consultas, escríbenos a phoenixgas01@gmail.com o por WhatsApp.</p>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     PÁGINA LEGAL: POLÍTICA DE PRIVACIDAD
+============================================================ -->
+<div class="legal-page" id="legal-privacidad">
+    <div class="container">
+        <a href="#" class="legal-back" data-legal-close="true">
+            <i class="fa-solid fa-arrow-left"></i> Volver al sitio
+        </a>
+        <h1>Política de privacidad</h1>
+        <p class="updated">Última actualización: junio de 2026</p>
+
+        <h2>1. Información que recopilamos</h2>
+        <p>Cuando te comunicas con nosotros por WhatsApp, llamadas, formularios o correo, podemos recopilar: nombre, teléfono, correo electrónico, dirección del inmueble y detalles del servicio solicitado.</p>
+
+        <h2>2. Uso de la información</h2>
+        <p>Utilizamos tus datos exclusivamente para:</p>
+        <ul>
+            <li>Coordinar visitas de inspección, cotización y ejecución.</li>
+            <li>Emitir certificados y documentación del servicio.</li>
+            <li>Brindar atención de emergencias y seguimiento postventa.</li>
+            <li>Enviar comunicaciones relacionadas con tu servicio.</li>
+        </ul>
+
+        <h2>3. Compartición con terceros</h2>
+        <p>No vendemos ni alquilamos tu información. Podemos compartir datos con proveedores solo cuando sea necesario para completar el servicio, siempre bajo confidencialidad.</p>
+
+        <h2>4. Conservación</h2>
+        <p>Conservamos los registros durante el tiempo necesario para cumplir obligaciones legales o de garantía.</p>
+
+        <h2>5. Seguridad</h2>
+        <p>Aplicamos medidas razonables para proteger tus datos contra accesos no autorizados o pérdida.</p>
+
+        <h2>6. Tus derechos</h2>
+        <p>Puedes solicitar que te informemos qué datos tenemos, que los corrijamos o que los eliminemos, salvo que exista una obligación legal de conservarlos.</p>
+
+        <h2>7. Contacto</h2>
+        <p>Preguntas sobre privacidad: phoenixgas01@gmail.com</p>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     PÁGINA LEGAL: POLÍTICA DE GARANTÍA
+============================================================ -->
+<div class="legal-page" id="legal-garantia">
+    <div class="container">
+        <a href="#" class="legal-back" data-legal-close="true">
+            <i class="fa-solid fa-arrow-left"></i> Volver al sitio
+        </a>
+        <h1>Política de garantía</h1>
+        <p class="updated">Última actualización: junio de 2026</p>
+
+        <h2>1. Cobertura general</h2>
+        <p>Todo trabajo ejecutado por PhoenixGas cuenta con garantía de 12 meses sobre mano de obra, y según el fabricante, sobre materiales y componentes instalados.</p>
+
+        <h2>2. Cómo activar la garantía</h2>
+        <p>Conserva el comprobante de servicio o certificado de prueba y reporta el inconveniente por WhatsApp, llamada o correo, indicando la fecha del servicio y descripción del problema.</p>
+
+        <h2>3. Tiempo de respuesta</h2>
+        <p>Para reclamos relacionados con fugas o fallas de seguridad: atención en las 24 horas siguientes. Para ajustes menores: visita en hasta 5 días hábiles.</p>
+
+        <h2>4. Exclusiones</h2>
+        <p>La garantía no aplica en:</p>
+        <ul>
+            <li>Modificaciones realizadas por terceros sobre la instalación original.</li>
+            <li>Daños por mal uso, falta de mantenimiento o artefactos no homologados.</li>
+            <li>Fuerza mayor: sismos, incendios externos, inundaciones.</li>
+            <li>Desgaste normal de componentes (empaques, mangueras).</li>
+        </ul>
+
+        <h2>5. Artefactos de terceros</h2>
+        <p>Los equipos no provistos por PhoenixGas mantienen la garantía de su fabricante. PhoenixGas garantiza únicamente la correcta conexión e instalación de dichos equipos.</p>
+
+        <h2>6. Reclamos no cubiertos</h2>
+        <p>Si el problema no está cubierto, se informará el diagnóstico y se ofrecerá una cotización para la reparación, sin obligación de aceptarla.</p>
+
+        <h2>7. Contacto</h2>
+        <p>Para activar tu garantía: WhatsApp .</p>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+
+/* --- FAQ: acordeón --- */
+document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+    });
+});
+
+/* --- GALERÍA: scroll horizontal con flechas --- */
+function scrollGallery(dir) {
+    const track = document.getElementById('galleryTrack');
+    const item  = track.querySelector('.gallery-item');
+    track.scrollBy({ left: dir * (item.offsetWidth + 20), behavior: 'smooth' });
+}
+
+/* --- TESTIMONIOS: carrusel infinito --- */
+(function () {
+    const track    = document.getElementById('testiTrack');
+    const dotsWrap = document.getElementById('testiDots');
+    const btnPrev  = document.getElementById('testiPrev');
+    const btnNext  = document.getElementById('testiNext');
+
+    const originals = Array.from(track.querySelectorAll('.testi-slide'));
+    const total     = originals.length;
+    const DURATION  = 500;
+    let current     = 1;
+    let isAnimating = false;
+
+    /* Clonar último al inicio y primero al final para loop */
+    track.insertBefore(originals[total - 1].cloneNode(true), originals[0]);
+    track.appendChild(originals[0].cloneNode(true));
+
+    track.style.display    = 'flex';
+    track.style.width      = '100%';
+    track.style.willChange = 'transform';
+
+    function setPos(idx, animate) {
+        track.style.transition = animate ? `transform ${DURATION}ms cubic-bezier(.4,0,.2,1)` : 'none';
+        track.style.transform  = `translateX(-${idx * 100}%)`;
+    }
+    setPos(current, false);
+
+    /* Crear dots */
+    originals.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Testimonio ' + (i + 1));
+        dot.addEventListener('click', () => goTo(i + 1));
+        dotsWrap.appendChild(dot);
+    });
+
+    function updateDots() {
+        let real = current - 1;
+        if (real < 0)     real = total - 1;
+        if (real >= total) real = 0;
+        document.querySelectorAll('.testi-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === real);
+        });
+    }
+
+    function goTo(idx, animate = true) {
+        if (isAnimating) return;
+        isAnimating = true;
+        current = idx;
+        setPos(current, animate);
+        updateDots();
+    }
+
+    track.addEventListener('transitionend', () => {
+        isAnimating = false;
+        if (current === 0)         { current = total;     setPos(current, false); }
+        else if (current === total + 1) { current = 1;    setPos(current, false); }
+        updateDots();
+    });
+
+    btnPrev.addEventListener('click', () => goTo(current - 1));
+    btnNext.addEventListener('click', () => goTo(current + 1));
+
+    /* Swipe táctil */
+    let touchX = null;
+    track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend',   e => {
+        if (touchX === null) return;
+        const dx = e.changedTouches[0].clientX - touchX;
+        if (Math.abs(dx) > 40) goTo(current + (dx < 0 ? 1 : -1));
+        touchX = null;
+    });
+
+    /* Autoplay */
+    let timer = setInterval(() => goTo(current + 1), 6000);
+    const section = document.getElementById('testimonios');
+    section.addEventListener('mouseenter', () => clearInterval(timer));
+    section.addEventListener('mouseleave', () => {
+        clearInterval(timer);
+        timer = setInterval(() => goTo(current + 1), 6000);
+    });
+})();
+
+/* --- PÁGINAS LEGALES --- */
+const siteMain  = document.querySelector('.site-main');
+const legalPages = document.querySelectorAll('.legal-page');
+
+document.querySelectorAll('[data-legal]').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        legalPages.forEach(p => p.classList.remove('active'));
+        document.getElementById('legal-' + link.getAttribute('data-legal')).classList.add('active');
+        siteMain.classList.add('hidden');
+        window.scrollTo(0, 0);
+    });
+});
+
+document.querySelectorAll('[data-legal-close]').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        legalPages.forEach(p => p.classList.remove('active'));
+        siteMain.classList.remove('hidden');
+        window.scrollTo(0, 0);
+    });
+});
+
+</script>
+
+</body>
+</html>
