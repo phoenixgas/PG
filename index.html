@@ -1993,7 +1993,7 @@ document.querySelectorAll('.faq-question').forEach(btn => {
     });
 })();
 
-// ---- GALERÍA DE PROYECTOS (20 items, autoplay infinito) ----
+// ---- GALERÍA DE PROYECTOS (20 items, SIN autoplay, solo manual) ----
 (function () {
     const track   = document.getElementById('projTrack');
     const btnPrev = document.getElementById('projPrev');
@@ -2074,21 +2074,13 @@ document.querySelectorAll('.faq-question').forEach(btn => {
     btnPrev.addEventListener('click', () => goTo(current - 1));
     btnNext.addEventListener('click', () => goTo(current + 1));
 
-    let timer = setInterval(() => goTo(current + 1), 3200);
-    const section = document.getElementById('trabajos');
-    section.addEventListener('mouseenter', () => clearInterval(timer));
-    section.addEventListener('mouseleave', () => {
-        clearInterval(timer);
-        timer = setInterval(() => goTo(current + 1), 3200);
-    });
-
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(init, 200);
     });
 
-    // LIGHTBOX
+    // ---- LIGHTBOX (se mantiene igual) ----
     const overlay   = document.getElementById('lightboxOverlay');
     const grid      = document.getElementById('lightboxGrid');
     const tituloEl  = document.getElementById('lightboxTitulo');
@@ -2118,12 +2110,12 @@ document.querySelectorAll('.faq-question').forEach(btn => {
             grid.appendChild(wrap);
         });
         overlay.classList.add('open');
-        clearInterval(timer);
+        // Ya no hay timer que pausar
     });
 
     function closeLightbox() {
         overlay.classList.remove('open');
-        timer = setInterval(() => goTo(current + 1), 3200);
+        // Ya no hay timer que reanudar
     }
     closeBtn.addEventListener('click', closeLightbox);
     overlay.addEventListener('click', (e) => {
