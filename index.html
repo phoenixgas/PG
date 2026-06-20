@@ -645,44 +645,88 @@
     .footer-bottom a:hover { color: var(--flame-soft); }
     .footer-legal-links { display: flex; gap: 22px; flex-wrap: wrap; }
 
-   /* Fondo oscuro translúcido que cubre la pantalla */
+ /* EL FONDO OSCURO QUE CUBRE TODO */
 .modal-legal {
-    display: none; 
+    display: none; /* Oculto por defecto */
     position: fixed;
-    z-index: 9999; /* Por encima de todo */
+    z-index: 999999; /* Z-index altísimo para que nada lo tape */
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.85); /* Azul oscuro translúcido muy elegante */
+    backdrop-filter: blur(4px); /* Difumina el fondo de la web */
     justify-content: center;
     align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-/* Caja blanca con el contenido */
+/* LA CAJA BLANCA DEL TEXTO */
 .modal-contenido {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 80vh;
-    overflow-y: auto; /* Por si el texto es muy largo */
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    background-color: #ffffff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 700px;
+    max-height: 85vh; /* Ocupa máximo el 85% de la pantalla */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden; /* Evita que el contenido se salga de los bordes redondeados */
+    animation: aparecerModal 0.3s ease-out;
 }
 
-/* Botón de cerrar (X) */
-.btn-cerrar {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #333;
+/* CABECERA DE LA VENTANA MODAL */
+.modal-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
 }
-.btn-cerrar:hover { color: #f00; }
+
+.modal-cabecera h3 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* BOTÓN CERRAR */
+.btn-cerrar {
+    font-size: 32px;
+    font-weight: bold;
+    color: #64748b;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.btn-cerrar:hover {
+    color: #ef4444; /* Rojo al pasar el mouse */
+}
+
+/* ÁREA DE LECTURA (CON SCROLL) */
+.modal-cuerpo {
+    padding: 30px;
+    overflow-y: auto; /* Agrega scroll solo a los textos largos */
+    color: #334155;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* ESTILOS PARA LOS TEXTOS INTERNOS */
+.modal-cuerpo h2 { color: #0f172a; margin-top: 0; font-size: 1.5rem; border-bottom: 2px solid #ea580c; padding-bottom: 10px;}
+.modal-cuerpo h4 { color: #1e293b; margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; }
+.modal-cuerpo ul { padding-left: 20px; }
+.modal-cuerpo li { margin-bottom: 8px; }
+
+/* Animación suave de aparición */
+@keyframes aparecerModal {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
     /* ============================================================
        RESPONSIVE
     ============================================================ */
@@ -1290,21 +1334,19 @@
 
         </div>
 
-        <!-- BARRA INFERIOR -->
-<div class="footer-bottom">
-    <p>&copy; 2018 PhoenixGas Instalaciones Profesionales. Todos los derechos reservados.</p>
-    <div class="footer-legal-links">
-        <a href="TERMINOS_Y_CONDICIONES.html" onclick="abrirModal('terminos')">Términos y condiciones</a>
-        <a href="POLITICA_DE_PRIVACIDAD.html" onclick="abrirModal('privacidad')">Política de privacidad</a>
-        <a href="POLITICA_DE_GARANTIA.html" onclick="abrirModal('garantia')">Política de garantía</a>
-    </div>
+        <div class="footer-legal-links">
+    <a href="#" class="enlace-legal" data-legal="terminos">Términos y condiciones</a>
+    <a href="#" class="enlace-legal" data-legal="privacidad">Política de privacidad</a>
+    <a href="#" class="enlace-legal" data-legal="garantia">Política de garantía</a>
 </div>
 
-<div id="modalLegal" class="modal-legal" onclick="cerrarModalExterno(event)">
+<div id="modalLegal" class="modal-legal">
     <div class="modal-contenido">
-        <span class="btn-cerrar" onclick="cerrarModal()">&times;</span>
-        <div id="textoLegal">
-            </div>
+        <div class="modal-cabecera">
+            <h3 id="tituloModal">Legal</h3>
+            <span class="btn-cerrar" id="cerrarModalBtn">&times;</span>
+        </div>
+        <div id="textoLegal" class="modal-cuerpo"></div>
     </div>
 </div>
 
@@ -1413,34 +1455,96 @@ function scrollGallery(dir) {
     });
 })();
 
-// Base de datos de tus textos legales
-const textos = {
-    terminos: "<h2>Términos y Condiciones</h2><p>Aquí va el texto de tus términos de PhoenixGas...</p>",
-    privacidad: "<h2>Política de Privacidad</h2><p>Aquí va el texto de cómo cuidas los datos...</p>",
-    garantia: "<h2>Política de Garantía</h2><p>Aquí van los detalles de la garantía de las instalaciones...</p>"
+// LOS TEXTOS LEGALES (Basados en tu imagen y adaptados profesionalmente)
+const baseDatosLegal = {
+    terminos: {
+        titulo: "Términos y Condiciones",
+        contenido: `
+            <h2>Términos y condiciones de servicio</h2>
+            <p><strong>Última actualización: junio de 2026</strong></p>
+            
+            <h4>1. Alcance del servicio</h4>
+            <p>Phoenix Gas presta servicios de diseño, instalación, mantenimiento, reparación y certificación de redes de gas domiciliarias, comerciales e industriales, dentro del territorio boliviano y bajo la normativa técnica vigente para instalaciones de gas.</p>
+            
+            <h4>2. Cotizaciones y presupuestos</h4>
+            <p>La inspección inicial es gratuita. Toda cotización entregada al cliente tiene una vigencia de 15 días calendario. Los precios pueden variar si, durante la ejecución, se identifican condiciones de la infraestructura no visibles al momento de la inspección (cañerías ocultas, daños estructurales, instalaciones no normadas, etc.). En tal caso, se informará al cliente antes de continuar con el trabajo adicional.</p>
+            
+            <h4>3. Condiciones de pago</h4>
+            <p>El pago podrá realizarse mediante código QR, en efectivo o transferencia bancaria. Para proyectos de mayor escala, se podrá acordar un cronograma de pagos por avance de obra. El saldo final se cobra contra entrega del trabajo y del certificado de prueba correspondiente.</p>
+        `
+    },
+    privacidad: {
+        titulo: "Política de Privacidad",
+        contenido: `
+            <h2>Política de Privacidad</h2>
+            <p><strong>Última actualización: junio de 2026</strong></p>
+            <p>En Phoenix Gas, respetamos su privacidad y estamos comprometidos con la protección de sus datos personales. La información solicitada (como nombre, dirección, número de teléfono o ubicación) será utilizada exclusivamente para los siguientes fines:</p>
+            <ul>
+                <li>Agendar inspecciones y visitas técnicas en su domicilio o empresa.</li>
+                <li>Elaborar y enviar cotizaciones personalizadas.</li>
+                <li>Gestionar la facturación y garantías de los servicios prestados.</li>
+                <li>Comunicación directa vía WhatsApp o correo electrónico para seguimiento de las instalaciones.</li>
+            </ul>
+            <h4>Protección de datos</h4>
+            <p>Sus datos no serán vendidos, alquilados ni compartidos con terceros sin su consentimiento, a excepción de las autoridades competentes si la normativa legal vigente lo requiriera para la certificación de instalaciones.</p>
+        `
+    },
+    garantia: {
+        titulo: "Política de Garantía",
+        contenido: `
+            <h2>Política de Garantía de Instalación</h2>
+            <p><strong>Última actualización: junio de 2026</strong></p>
+            <p>En Phoenix Gas respaldamos la calidad de nuestro trabajo. Garantizamos la mano de obra y los materiales instalados directamente por nuestra empresa por un período de <strong>24 meses</strong> desde la fecha de entrega, cubriendo defectos de instalación o fugas atribuibles al trabajo realizado.</p>
+            
+            <h4>Exclusiones de la Garantía</h4>
+            <p>La presente garantía quedará anulada y no cubrirá:</p>
+            <ul>
+                <li>Daños o modificaciones realizadas por terceros (albañiles, otros técnicos) tras nuestra entrega.</li>
+                <li>Mal uso, negligencia o falta de mantenimiento preventivo por parte del cliente.</li>
+                <li>Daños causados por fenómenos naturales (inundaciones, terremotos), asentamientos del terreno, cortes de suministro externos o casos de fuerza mayor.</li>
+                <li>Equipos o artefactos de gas no provistos ni instalados directamente por Phoenix Gas.</li>
+            </ul>
+            <p>Toda solicitud de revisión por garantía deberá acompañarse del comprobante de trabajo o factura correspondiente.</p>
+        `
+    }
 };
 
-function abrirModal(tipo) {
+// LÓGICA DE FUNCIONAMIENTO
+document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('modalLegal');
-    const contenedorTexto = document.getElementById('textoLegal');
-    
-    // Inyectamos el texto correspondiente
-    contenedorTexto.innerHTML = textos[tipo] || "Texto no encontrado.";
-    
-    // Mostramos el modal de forma flexible (centrado)
-    modal.style.display = "flex";
-}
+    const btnCerrar = document.getElementById('cerrarModalBtn');
+    const tituloModal = document.getElementById('tituloModal');
+    const cuerpoModal = document.getElementById('textoLegal');
+    const enlacesLegales = document.querySelectorAll('.enlace-legal');
 
-function cerrarModal() {
-    document.getElementById('modalLegal').style.style.display = "none";
-}
+    // Al hacer clic en cualquier enlace del footer
+    enlacesLegales.forEach(enlace => {
+        enlace.addEventListener('click', function(e) {
+            e.preventDefault(); // ESTO EVITA QUE SE ROMPA EL BOTÓN "ATRÁS" DEL NAVEGADOR
+            
+            const tipo = this.getAttribute('data-legal');
+            const info = baseDatosLegal[tipo];
 
-// Opcional: Cierra el modal si el usuario hace clic fuera de la caja blanca
-function cerrarModalExterno(event) {
-    if (event.target.id === 'modalLegal') {
-        cerrarModal();
-    }
-}
+            if(info) {
+                tituloModal.innerHTML = info.titulo;
+                cuerpoModal.innerHTML = info.contenido;
+                modal.style.display = "flex"; // Mostramos el modal
+            }
+        });
+    });
+
+    // Función para cerrar el modal haciendo clic en la X
+    btnCerrar.addEventListener('click', () => {
+        modal.style.display = "none";
+    });
+
+    // Función para cerrar el modal haciendo clic afuera de la caja blanca
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+});
 
 </script>
 
