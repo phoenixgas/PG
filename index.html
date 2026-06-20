@@ -1150,20 +1150,6 @@
         <div class="proj-window">
             <div class="proj-track" id="projTrack">
 
-                <!-- ============================================================
-     GALERÍA DE PROYECTOS (20 proyectos, carrusel infinito)
-============================================================ -->
-<section class="gallery" id="trabajos">
-    <div class="container">
-        <div class="section-head">
-            <span class="section-eyebrow">Nuestro trabajo</span>
-            <h2>Proyectos realizados</h2>
-            <p>Cada proyecto incluye 4 fotos del trabajo terminado. Haz clic en cualquiera para verlas en grande.</p>
-        </div>
-
-        <div class="proj-window">
-            <div class="proj-track" id="projTrack">
-
                 <!-- ===== PROYECTO 1 ===== -->
                 <div class="proj-card" data-titulo="Instalación Multifamiliar" data-zona="Condominio Uzeda, Santa Cruz">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
@@ -1527,7 +1513,7 @@
                     <!-- 2 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
-                        <p class="testi-quote">Necesitábamos rediseñar toda la red de gas del restaurante sin parar la operación, amanecieron trabajando eso me sorprendio .PhoenixGas coordinó los trabajos por turnos y entregó todo certificado y dentro de plazo.</p>
+                        <p class="testi-quote">Necesitábamos rediseñar toda la red de gas del restaurante sin parar la operación, amanecieron trabajando eso me sorprendió. PhoenixGas coordinó los trabajos por turnos y entregó todo certificado y dentro de plazo.</p>
                         <div class="testi-author">Carlos Méndez</div>
                         <div class="testi-role">Administrador, Restaurante Limón y Sal</div>
                     </div>
@@ -1631,7 +1617,7 @@
                     <!-- 15 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
-                        <p class="testi-quote">Tienen un servicio de emergencia rapido . Un sábado en la noche tuvimos un problema y en 40 minutos ya estaban en casa.</p>
+                        <p class="testi-quote">Tienen un servicio de emergencia rápido. Un sábado en la noche tuvimos un problema y en 40 minutos ya estaban en casa.</p>
                         <div class="testi-author">Juan Carlos Rivero</div>
                         <div class="testi-role">Propietario, Vivienda en Urubó</div>
                     </div>
@@ -1968,7 +1954,7 @@ document.querySelectorAll('.faq-question').forEach(btn => {
             const modalId = link.getAttribute('data-modal');
             if (modals[modalId]) {
                 modals[modalId].classList.add('active');
-                document.body.style.overflow = 'hidden'; // evitar scroll
+                document.body.style.overflow = 'hidden';
             }
         });
     });
@@ -1984,7 +1970,7 @@ document.querySelectorAll('.faq-question').forEach(btn => {
         });
     });
 
-    // Cerrar modal al hacer clic en el overlay (fondo)
+    // Cerrar modal al hacer clic en el overlay
     Object.values(modals).forEach(modal => {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
