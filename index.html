@@ -401,49 +401,105 @@
     .media-placeholder > p   { font-size: 14px; color: #93a8c4; max-width: 280px; }
 
     /* ============================================================
-       GALERÍA DE TRABAJOS (CARRUSEL HORIZONTAL)
+       GALERÍA DE PROYECTOS (CARRUSEL INFINITO AUTOPLAY)
+       Cada proyecto = 1 tarjeta con 4 fotos en mosaico.
+       Clic en la tarjeta → abre lightbox con las 4 fotos al 100%.
     ============================================================ */
-    .gallery { background: var(--paper); }
-    .carousel-track {
-        display: flex;
-        gap: 20px;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        padding-bottom: 14px;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-    .carousel-track::-webkit-scrollbar { display: none; }
-    .gallery-item {
-        flex: 0 0 calc(33.333% - 14px);
-        scroll-snap-align: start;
-        aspect-ratio: 4/3;
+    .gallery { background: var(--paper); overflow: hidden; }
+
+    .proj-window {
+        overflow: hidden;
         border-radius: var(--radius);
-        background: linear-gradient(160deg, #1f3a5c, var(--ink));
-        border: 1px dashed rgba(255,255,255,.18);
+    }
+    .proj-track {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: #93a8c4;
-        text-align: center;
-        padding: 16px;
+        gap: 22px;
+        width: 100%;
+    }
+
+    .proj-card {
+        flex: 0 0 calc(33.333% - 15px);
+        border-radius: var(--radius);
+        background: var(--ink);
+        border: 1px solid rgba(255,255,255,.1);
+        overflow: hidden;
+        cursor: pointer;
+        position: relative;
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .proj-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px -18px rgba(12,27,46,.35);
+    }
+
+    /* Mosaico de 4 fotos dentro de cada tarjeta */
+    .proj-mosaic {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 3px;
+        aspect-ratio: 4 / 3;
+        background: var(--ink);
+    }
+    .proj-mosaic .ph {
         position: relative;
         overflow: hidden;
+        background: linear-gradient(160deg, #1f3a5c, var(--ink));
     }
-    .gallery-item img {
-        position: absolute; inset: 0;
+    .proj-mosaic img {
         width: 100%; height: 100%;
         object-fit: cover;
+        display: block;
+        /* --- Protección anti-copia básica --- */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        pointer-events: none; /* evita arrastrar/guardar individualmente, el clic lo capta la tarjeta */
     }
-    .gallery-item i    { font-size: 30px; color: var(--flame-soft); margin-bottom: 10px; }
-    .gallery-item span { font-size: 13px; }
-    .carousel-controls {
+    .proj-mosaic .ph-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #5e7a9b;
+        font-size: 20px;
+    }
+
+    .proj-info {
+        padding: 18px 20px;
+    }
+    .proj-info h4 {
+        color: #fff;
+        font-size: 15.5px;
+        margin-bottom: 4px;
+    }
+    .proj-info span {
+        font-size: 12.5px;
+        color: var(--flame-soft);
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    .proj-view-icon {
+        position: absolute;
+        top: 14px; right: 14px;
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: rgba(12,27,46,.65);
+        border: 1px solid rgba(255,255,255,.25);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        backdrop-filter: blur(3px);
+    }
+
+    .gallery .carousel-controls {
         display: flex;
         justify-content: center;
         gap: 14px;
-        margin-top: 26px;
+        margin-top: 28px;
     }
     .carousel-btn {
         width: 46px; height: 46px;
@@ -459,6 +515,89 @@
         transition: all .2s ease;
     }
     .carousel-btn:hover { background: var(--flame); color: #fff; border-color: var(--flame); }
+
+    @media (max-width: 980px) {
+        .proj-card { flex: 0 0 calc(50% - 11px); }
+    }
+    @media (max-width: 620px) {
+        .proj-card { flex: 0 0 88%; }
+    }
+
+    /* ============================================================
+       LIGHTBOX DE PROYECTO (4 fotos a pantalla completa)
+    ============================================================ */
+    .lightbox-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 999998;
+        background: rgba(8,14,24,.94);
+        backdrop-filter: blur(6px);
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+    }
+    .lightbox-overlay.open { display: flex; }
+
+    .lightbox-box {
+        width: 100%;
+        max-width: 1000px;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+    .lightbox-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #fff;
+        margin-bottom: 16px;
+        padding: 0 4px;
+    }
+    .lightbox-head h3 { color: #fff; font-size: 18px; }
+    .lightbox-head span { color: #93a8c4; font-size: 13px; }
+    .lightbox-close {
+        font-size: 30px;
+        color: #cbd9ec;
+        background: none;
+        border: none;
+        cursor: pointer;
+        line-height: 1;
+        transition: color .2s ease;
+    }
+    .lightbox-close:hover { color: var(--flame); }
+
+    .lightbox-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        overflow-y: auto;
+    }
+    .lightbox-grid .lb-ph {
+        border-radius: 10px;
+        overflow: hidden;
+        background: #16314f;
+        aspect-ratio: 4/3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .lightbox-grid img {
+        width: 100%; height: 100%;
+        object-fit: contain;
+        background: #0c1b2e;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        pointer-events: none;
+    }
+    .lightbox-grid .lb-empty { color: #5e7a9b; font-size: 22px; }
+
+    @media (max-width: 640px) {
+        .lightbox-grid { grid-template-columns: 1fr; }
+    }
+
 
     /* ============================================================
        TESTIMONIOS (CARRUSEL INFINITO)
@@ -1467,12 +1606,170 @@ document.querySelectorAll('.faq-question').forEach(btn => {
     });
 });
 
-/* --- GALERÍA: scroll horizontal con flechas --- */
-function scrollGallery(dir) {
-    const track = document.getElementById('galleryTrack');
-    const item  = track.querySelector('.gallery-item');
-    track.scrollBy({ left: dir * (item.offsetWidth + 20), behavior: 'smooth' });
-}
+/* --- GALERÍA DE PROYECTOS: carrusel infinito con autoplay --- */
+(function () {
+    const track   = document.getElementById('projTrack');
+    const btnPrev = document.getElementById('projPrev');
+    const btnNext = document.getElementById('projNext');
+    if (!track) return;
+
+    const originals = Array.from(track.querySelectorAll('.proj-card'));
+    const total      = originals.length;
+    if (total === 0) return;
+
+    /* Cuántas tarjetas se ven a la vez según el ancho de pantalla */
+    function visibleCount() {
+        const w = window.innerWidth;
+        if (w <= 620) return 1;
+        if (w <= 980) return 2;
+        return 3;
+    }
+
+    let perView   = visibleCount();
+    let current   = perView; // arranca después del bloque clonado al inicio
+    let isAnimating = false;
+    const DURATION = 600;
+
+    /* Clonar tarjetas al inicio y al final para loop infinito */
+    function buildClones() {
+        // limpiar clones previos si los hubiera (ej. al redimensionar)
+        track.querySelectorAll('.proj-card.clon').forEach(c => c.remove());
+
+        const headClones = originals.slice(-perView).map(n => {
+            const c = n.cloneNode(true);
+            c.classList.add('clon');
+            return c;
+        });
+        const tailClones = originals.slice(0, perView).map(n => {
+            const c = n.cloneNode(true);
+            c.classList.add('clon');
+            return c;
+        });
+
+        headClones.forEach(c => track.insertBefore(c, track.firstChild));
+        tailClones.forEach(c => track.appendChild(c));
+    }
+
+    function cardWidth() {
+        const card = track.querySelector('.proj-card');
+        const style = getComputedStyle(track);
+        const gap = parseFloat(style.gap) || 0;
+        return card.getBoundingClientRect().width + gap;
+    }
+
+    function setPos(animate) {
+        const offset = current * cardWidth();
+        track.style.transition = animate ? `transform ${DURATION}ms cubic-bezier(.4,0,.2,1)` : 'none';
+        track.style.transform  = `translateX(-${offset}px)`;
+    }
+
+    function init() {
+        perView = visibleCount();
+        buildClones();
+        current = perView;
+        setPos(false);
+    }
+    init();
+
+    function goTo(idx, animate = true) {
+        if (isAnimating) return;
+        isAnimating = true;
+        current = idx;
+        setPos(animate);
+    }
+
+    track.addEventListener('transitionend', () => {
+        isAnimating = false;
+        if (current >= total + perView) {
+            current = perView;
+            setPos(false);
+        } else if (current < perView) {
+            current = total + current;
+            setPos(false);
+        }
+    });
+
+    btnPrev.addEventListener('click', () => goTo(current - 1));
+    btnNext.addEventListener('click', () => goTo(current + 1));
+
+    /* Autoplay: avanza solo cada 3.2s, recorre los 50 proyectos y reinicia */
+    let timer = setInterval(() => goTo(current + 1), 3200);
+    const section = document.getElementById('trabajos');
+    section.addEventListener('mouseenter', () => clearInterval(timer));
+    section.addEventListener('mouseleave', () => {
+        clearInterval(timer);
+        timer = setInterval(() => goTo(current + 1), 3200);
+    });
+
+    /* Re-ajustar al cambiar tamaño de ventana */
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(init, 200);
+    });
+
+    /* --- LIGHTBOX: clic en una tarjeta abre las 4 fotos en grande --- */
+    const overlay   = document.getElementById('lightboxOverlay');
+    const grid      = document.getElementById('lightboxGrid');
+    const tituloEl  = document.getElementById('lightboxTitulo');
+    const zonaEl    = document.getElementById('lightboxZona');
+    const closeBtn  = document.getElementById('lightboxClose');
+
+    track.addEventListener('click', (e) => {
+        const card = e.target.closest('.proj-card');
+        if (!card) return;
+
+        const titulo = card.getAttribute('data-titulo') || 'Proyecto';
+        const zona   = card.getAttribute('data-zona') || '';
+        tituloEl.textContent = titulo;
+        zonaEl.textContent   = zona;
+
+        /* Copiar las 4 fotos (o placeholders) del mosaico de la tarjeta clickeada */
+        grid.innerHTML = '';
+        card.querySelectorAll('.proj-mosaic .ph').forEach(ph => {
+            const wrap = document.createElement('div');
+            wrap.className = 'lb-ph';
+            const img = ph.querySelector('img');
+            if (img) {
+                const bigImg = document.createElement('img');
+                bigImg.src = img.src;
+                bigImg.alt = img.alt;
+                wrap.appendChild(bigImg);
+            } else {
+                wrap.innerHTML = '<i class="fa-solid fa-image lb-empty"></i>';
+            }
+            grid.appendChild(wrap);
+        });
+
+        overlay.classList.add('open');
+        clearInterval(timer); // pausa el autoplay mientras se ve el lightbox
+    });
+
+    function closeLightbox() {
+        overlay.classList.remove('open');
+        timer = setInterval(() => goTo(current + 1), 3200);
+    }
+    closeBtn.addEventListener('click', closeLightbox);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('open')) closeLightbox();
+    });
+})();
+
+/* --- PROTECCIÓN BÁSICA DE IMÁGENES (no es 100% infalible) ---
+   Bloquea clic derecho y arrastre sobre las fotos de proyectos
+   y del lightbox, para disuadir la descarga casual. */
+document.addEventListener('contextmenu', (e) => {
+    if (e.target.closest('.proj-mosaic, .lightbox-grid')) {
+        e.preventDefault();
+    }
+});
+document.querySelectorAll('.proj-mosaic img, .lightbox-grid img').forEach(img => {
+    img.addEventListener('dragstart', e => e.preventDefault());
+});
+
 
 /* --- TESTIMONIOS: carrusel infinito --- */
 (function () {
