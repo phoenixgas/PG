@@ -809,26 +809,30 @@
     }
 
     /* === NUEVAS REGLAS PARA EL CÍRCULO === */
-    .gauge {
+ .gauge {
         max-width: 420px !important;
         margin: 0 auto;
     }
     .gauge-inner {
-        width: 80% !important;
-        height: 80% !important;
+        width: 85% !important;      /* más grande que antes (80%) */
+        height: 85% !important;
+        padding: 16px !important;   /* más aire interior */
     }
     .gauge-inner img {
-        width: 95px !important;
-        height: 95px !important;
+        width: 110px !important;    /* logo más grande */
+        height: 110px !important;
     }
     .gauge-inner .gauge-title {
-        font-size: 20px !important;
+        font-size: 22px !important; /* texto "PhoenixGas" más grande */
     }
     .gauge-inner .gauge-sub {
-        font-size: 14px !important;
+        font-size: 16px !important; /* texto "PRESIÓN BAJO CONTROL" más grande */
+    }
+    /* Opcional: reducir el tamaño de las etiquetas laterales para que no molesten */
+    .gauge-tick {
+        font-size: 10px !important;
     }
 }
-
     /* ============================================================
        MODALES LEGALES (ventanas superpuestas)
     ============================================================ */
