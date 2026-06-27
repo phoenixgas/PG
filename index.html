@@ -791,48 +791,53 @@
         .showcase-grid.reverse .media-placeholder { order: initial; }
         .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
     }
-    @media (max-width: 640px) {
-    .hero-text h1 { font-size: 32px; }
-    section { padding: 64px 0; }
-    section-head h2 { font-size: 26px; }
-    .testi-slide { padding: 28px 20px; }
-    .testi-quote { font-size: 15px; }
-    .testi-nau-btn { width: 40px; height: 40px; }
-    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-    .footer-bottom { flex-direction: column; }
-    .emergency-tag { display: none; }
-    whatsapp-floating {
-        bottom: 16px;
-        right: 16px;
-        width: 50px;
-        height: 50px;
-    }
+        @media (max-width: 640px) {
+        .hero-text h1 { font-size: 32px; }
+        section { padding: 64px 0; }
+        .section-head h2 { font-size: 26px; }
+        .testi-slide { padding: 28px 20px; }
+        .testi-quote { font-size: 15px; }
+        .testi-nav-btn { width: 40px; height: 40px; }
+        .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+        .footer-bottom { flex-direction: column; }
+        .emergency-tag { display: none; }
 
-    /* === NUEVAS REGLAS PARA EL CÍRCULO === */
- .gauge {
-        max-width: 420px !important;
-        margin: 0 auto;
+        /* Gauge más grande en móvil */
+        .gauge {
+            max-width: 420px !important;
+            margin: 0 auto;
+        }
+        .gauge-inner {
+            width: 85% !important;
+            height: 85% !important;
+            padding: 16px !important;
+        }
+        .gauge-inner img {
+            width: 110px !important;
+            height: 110px !important;
+        }
+        .gauge-inner .gauge-title {
+            font-size: 22px !important;
+        }
+        .gauge-inner .gauge-sub {
+            font-size: 16px !important;
+        }
+        .gauge-tick {
+            font-size: 10px !important;
+        }
+
+        .whatsapp-floating {
+            bottom: 16px;
+            right: 16px;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+        }
+
+        .modal-body { padding: 24px 20px; }
+        .modal-header { padding: 16px 20px; }
+        .modal-header h2 { font-size: 17px; }
     }
-    .gauge-inner {
-        width: 85% !important;      /* más grande que antes (80%) */
-        height: 85% !important;
-        padding: 16px !important;   /* más aire interior */
-    }
-    .gauge-inner img {
-        width: 110px !important;    /* logo más grande */
-        height: 110px !important;
-    }
-    .gauge-inner .gauge-title {
-        font-size: 22px !important; /* texto "PhoenixGas" más grande */
-    }
-    .gauge-inner .gauge-sub {
-        font-size: 16px !important; /* texto "PRESIÓN BAJO CONTROL" más grande */
-    }
-    /* Opcional: reducir el tamaño de las etiquetas laterales para que no molesten */
-    .gauge-tick {
-        font-size: 10px !important;
-    }
-}
     /* ============================================================
        MODALES LEGALES (ventanas superpuestas)
     ============================================================ */
@@ -1966,296 +1971,247 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
     </div>
 </div>
 
-<!-- ============================================================
-     JAVASCRIPT
-============================================================ -->
 <script>
-// ---- FAQ acordeón ----
-document.querySelectorAll('.faq-question').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const item = btn.closest('.faq-item');
-        const wasOpen = item.classList.contains('open');
-        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-        if (!wasOpen) item.classList.add('open');
-    });
-});
-
-// ---- MODALES LEGALES ----
 (function() {
-    const modals = {
-        terminos: document.getElementById('modal-terminos'),
-        privacidad: document.getElementById('modal-privacidad'),
-        garantia: document.getElementById('modal-garantia')
-    };
-    const links = document.querySelectorAll('[data-modal]');
-    const closeButtons = document.querySelectorAll('[data-close-modal]');
+    'use strict';
 
-    // Abrir modal
-    links.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const modalId = link.getAttribute('data-modal');
-            if (modals[modalId]) {
-                modals[modalId].classList.add('active');
-                document.body.style.overflow = 'hidden';
+    /* ==========================================================
+       LIGHTBOX — Overlay DOM (sin window.open)
+       Esto reemplaza cualquier window.open() que tenías antes.
+       El lightbox se abre como capa sobre la misma página.
+    ========================================================== */
+    var lightbox = document.getElementById('lightbox');
+    var lbTitle  = document.getElementById('lbTitle');
+    var lbZone   = document.getElementById('lbZone');
+    var lbGrid   = document.getElementById('lbGrid');
+    var lbClose  = document.getElementById('lbClose');
+    var lightboxOpen = false;
+
+    // Al hacer clic en cualquier tarjeta de proyecto
+    document.querySelectorAll('.proj-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+            var titulo = card.getAttribute('data-titulo') || 'Proyecto';
+            var zona   = card.getAttribute('data-zona') || '';
+            var images = card.querySelectorAll('.proj-mosaic img');
+
+            lbTitle.textContent = titulo;
+            lbZone.textContent  = zona;
+            lbGrid.innerHTML    = '';
+
+            if (images.length === 0) {
+                lbGrid.innerHTML = '<div class="lb-ph lb-empty"><i class="fa-solid fa-image"></i></div>';
+            } else {
+                images.forEach(function(img) {
+                    var div = document.createElement('div');
+                    div.className = 'lb-ph';
+                    var newImg = document.createElement('img');
+                    newImg.src = img.src;
+                    newImg.alt = img.alt;
+                    newImg.loading = 'lazy';
+                    div.appendChild(newImg);
+                    lbGrid.appendChild(div);
+                });
             }
+
+            lightbox.classList.add('open');
+            lightboxOpen = true;
+            document.body.style.overflow = 'hidden';
+
+            // Agregar entrada al historial para que "atrás" cierre el lightbox
+            history.pushState({ lightbox: true }, '');
         });
     });
 
-    // Cerrar modal con botón X
-    closeButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const modalId = btn.getAttribute('data-close-modal');
-            if (modals[modalId]) {
-                modals[modalId].classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
+    function closeLightbox() {
+        lightbox.classList.remove('open');
+        lightboxOpen = false;
+        document.body.style.overflow = '';
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+
+    // Cerrar al hacer clic en el fondo oscuro
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) closeLightbox();
     });
 
-    // Cerrar modal al hacer clic en el overlay
-    Object.values(modals).forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
+    // Cerrar con tecla Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightboxOpen) closeLightbox();
     });
 
-    // Cerrar con tecla ESC
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            Object.values(modals).forEach(modal => {
-                if (modal.classList.contains('active')) {
-                    modal.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
+    // BOTÓN "ATRÁS" DEL CELULAR — cierra el lightbox en vez de salir de la página
+    window.addEventListener('popstate', function() {
+        if (lightboxOpen) {
+            closeLightbox();
+            history.pushState({ lightbox: false }, '');
         }
     });
-})();
 
-// ---- GALERÍA DE PROYECTOS (20 items, SIN autoplay, solo manual) ----
-(function () {
-    const track   = document.getElementById('projTrack');
-    const btnPrev = document.getElementById('projPrev');
-    const btnNext = document.getElementById('projNext');
-    if (!track) return;
+    // Inicializar estado del historial
+    history.replaceState({ lightbox: false }, '');
 
-    const originals = Array.from(track.querySelectorAll('.proj-card'));
-    const total      = originals.length;
-    if (total === 0) return;
+    /* ==========================================================
+       CARRUSEL DE PROYECTOS
+    ========================================================== */
+    var projTrack = document.getElementById('projTrack');
+    var projCards = projTrack.querySelectorAll('.proj-card');
+    var projIndex = 0;
+    var projAutoplayTimer = null;
 
-    function visibleCount() {
-        const w = window.innerWidth;
+    function getVisibleCards() {
+        var w = window.innerWidth;
         if (w <= 620) return 1;
         if (w <= 980) return 2;
         return 3;
     }
 
-    let perView   = visibleCount();
-    let current   = perView;
-    let isAnimating = false;
-    const DURATION = 600;
+    function getMaxIndex() {
+        return Math.max(0, projCards.length - getVisibleCards());
+    }
 
-    function buildClones() {
-        track.querySelectorAll('.proj-card.clon').forEach(c => c.remove());
-        const headClones = originals.slice(-perView).map(n => {
-            const c = n.cloneNode(true);
-            c.classList.add('clon');
-            return c;
+    function slideProjects(direction) {
+        var max = getMaxIndex();
+        projIndex += direction;
+        if (projIndex < 0) projIndex = max;
+        if (projIndex > max) projIndex = 0;
+        var cardWidth = projCards[0].offsetWidth + 22;
+        projTrack.style.transition = 'transform 0.5s ease';
+        projTrack.style.transform = 'translateX(' + (-projIndex * cardWidth) + 'px)';
+    }
+
+    document.getElementById('projPrev').addEventListener('click', function() {
+        slideProjects(-1);
+        resetProjAutoplay();
+    });
+    document.getElementById('projNext').addEventListener('click', function() {
+        slideProjects(1);
+        resetProjAutoplay();
+    });
+
+    function startProjAutoplay() {
+        projAutoplayTimer = setInterval(function() { slideProjects(1); }, 4500);
+    }
+    function resetProjAutoplay() {
+        clearInterval(projAutoplayTimer);
+        startProjAutoplay();
+    }
+    startProjAutoplay();
+
+    // Pausar autoplay al pasar el mouse
+    projTrack.addEventListener('mouseenter', function() { clearInterval(projAutoplayTimer); });
+    projTrack.addEventListener('mouseleave', function() { startProjAutoplay(); });
+
+    /* ==========================================================
+       CARRUSEL DE TESTIMONIOS
+    ========================================================== */
+    var testiTrack = document.getElementById('testiTrack');
+    var testiSlides = testiTrack.querySelectorAll('.testi-slide');
+    var testiIndex = 0;
+    var testiDotsContainer = document.getElementById('testiDots');
+
+    // Crear los puntos de navegación
+    for (var i = 0; i < testiSlides.length; i++) {
+        var dot = document.createElement('button');
+        dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Testimonio ' + (i + 1));
+        dot.dataset.index = i;
+        testiDotsContainer.appendChild(dot);
+    }
+
+    function slideTestimonial(index) {
+        if (index < 0) index = testiSlides.length - 1;
+        if (index >= testiSlides.length) index = 0;
+        testiIndex = index;
+        testiTrack.style.transition = 'transform 0.5s ease';
+        testiTrack.style.transform = 'translateX(' + (-testiIndex * 100) + '%)';
+        testiDotsContainer.querySelectorAll('.testi-dot').forEach(function(d, idx) {
+            d.classList.toggle('active', idx === testiIndex);
         });
-        const tailClones = originals.slice(0, perView).map(n => {
-            const c = n.cloneNode(true);
-            c.classList.add('clon');
-            return c;
-        });
-        headClones.forEach(c => track.insertBefore(c, track.firstChild));
-        tailClones.forEach(c => track.appendChild(c));
     }
 
-    function cardWidth() {
-        const card = track.querySelector('.proj-card');
-        const style = getComputedStyle(track);
-        const gap = parseFloat(style.gap) || 0;
-        return card.getBoundingClientRect().width + gap;
-    }
+    document.getElementById('testiPrev').addEventListener('click', function() {
+        slideTestimonial(testiIndex - 1);
+    });
+    document.getElementById('testiNext').addEventListener('click', function() {
+        slideTestimonial(testiIndex + 1);
+    });
 
-    function setPos(animate) {
-        const offset = current * cardWidth();
-        track.style.transition = animate ? `transform ${DURATION}ms cubic-bezier(.4,0,.2,1)` : 'none';
-        track.style.transform  = `translateX(-${offset}px)`;
-    }
-
-    function init() {
-        perView = visibleCount();
-        buildClones();
-        current = perView;
-        setPos(false);
-    }
-    init();
-
-    function goTo(idx, animate = true) {
-        if (isAnimating) return;
-        isAnimating = true;
-        current = idx;
-        setPos(animate);
-    }
-
-    track.addEventListener('transitionend', () => {
-        isAnimating = false;
-        if (current >= total + perView) {
-            current = perView;
-            setPos(false);
-        } else if (current < perView) {
-            current = total + current;
-            setPos(false);
+    testiDotsContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('testi-dot')) {
+            slideTestimonial(parseInt(e.target.dataset.index));
         }
     });
 
-    btnPrev.addEventListener('click', () => goTo(current - 1));
-    btnNext.addEventListener('click', () => goTo(current + 1));
+    // Autoplay testimonios
+    setInterval(function() { slideTestimonial(testiIndex + 1); }, 6000);
 
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(init, 200);
-    });
+    /* ==========================================================
+       FAQ — Acordeón
+    ========================================================== */
+    document.querySelectorAll('.faq-question').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var item = btn.parentElement;
+            var wasOpen = item.classList.contains('open');
 
-    // ---- LIGHTBOX (se mantiene igual) ----
-    const overlay   = document.getElementById('lightboxOverlay');
-    const grid      = document.getElementById('lightboxGrid');
-    const tituloEl  = document.getElementById('lightboxTitulo');
-    const zonaEl    = document.getElementById('lightboxZona');
-    const closeBtn  = document.getElementById('lightboxClose');
+            // Cerrar todas las demás
+            document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                openItem.classList.remove('open');
+            });
 
-    track.addEventListener('click', (e) => {
-        const card = e.target.closest('.proj-card');
-        if (!card) return;
-        const titulo = card.getAttribute('data-titulo') || 'Proyecto';
-        const zona   = card.getAttribute('data-zona') || '';
-        tituloEl.textContent = titulo;
-        zonaEl.textContent   = zona;
-        grid.innerHTML = '';
-        card.querySelectorAll('.proj-mosaic .ph').forEach(ph => {
-            const wrap = document.createElement('div');
-            wrap.className = 'lb-ph';
-            const img = ph.querySelector('img');
-            if (img) {
-                const bigImg = document.createElement('img');
-                bigImg.src = img.src;
-                bigImg.alt = img.alt;
-                wrap.appendChild(bigImg);
-            } else {
-                wrap.innerHTML = '<i class="fa-solid fa-image lb-empty"></i>';
-            }
-            grid.appendChild(wrap);
+            // Toggle la actual
+            if (!wasOpen) item.classList.add('open');
         });
-        overlay.classList.add('open');
-        // Ya no hay timer que pausar
     });
 
-    function closeLightbox() {
-        overlay.classList.remove('open');
-        // Ya no hay timer que reanudar
-    }
-    closeBtn.addEventListener('click', closeLightbox);
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeLightbox();
-    });
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && overlay.classList.contains('open')) closeLightbox();
-    });
-})();
-
-// ---- Protección de imágenes ----
-document.addEventListener('contextmenu', (e) => {
-    if (e.target.closest('.proj-mosaic, .lightbox-grid')) {
+    /* ==========================================================
+       MODALES LEGALES (Términos y Privacidad)
+    ========================================================== */
+    document.getElementById('openTerminos').addEventListener('click', function(e) {
         e.preventDefault();
-    }
-});
-document.querySelectorAll('.proj-mosaic img, .lightbox-grid img').forEach(img => {
-    img.addEventListener('dragstart', e => e.preventDefault());
-});
-
-// ---- TESTIMONIOS ----
-(function () {
-    const track    = document.getElementById('testiTrack');
-    const dotsWrap = document.getElementById('testiDots');
-    const btnPrev  = document.getElementById('testiPrev');
-    const btnNext  = document.getElementById('testiNext');
-
-    const originals = Array.from(track.querySelectorAll('.testi-slide'));
-    const total     = originals.length;
-    const DURATION  = 500;
-    let current     = 1;
-    let isAnimating = false;
-
-    track.insertBefore(originals[total - 1].cloneNode(true), originals[0]);
-    track.appendChild(originals[0].cloneNode(true));
-
-    track.style.display    = 'flex';
-    track.style.width      = '100%';
-    track.style.willChange = 'transform';
-
-    function setPos(idx, animate) {
-        track.style.transition = animate ? `transform ${DURATION}ms cubic-bezier(.4,0,.2,1)` : 'none';
-        track.style.transform  = `translateX(-${idx * 100}%)`;
-    }
-    setPos(current, false);
-
-    originals.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
-        dot.setAttribute('aria-label', 'Testimonio ' + (i + 1));
-        dot.addEventListener('click', () => goTo(i + 1));
-        dotsWrap.appendChild(dot);
+        document.getElementById('modalTerminos').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+    document.getElementById('openPrivacidad').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('modalPrivacidad').classList.add('active');
+        document.body.style.overflow = 'hidden';
     });
 
-    function updateDots() {
-        let real = current - 1;
-        if (real < 0)     real = total - 1;
-        if (real >= total) real = 0;
-        document.querySelectorAll('.testi-dot').forEach((d, i) => {
-            d.classList.toggle('active', i === real);
+    // Cerrar modales al hacer clic en el fondo
+    document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
-    }
-
-    function goTo(idx, animate = true) {
-        if (isAnimating) return;
-        isAnimating = true;
-        current = idx;
-        setPos(current, animate);
-        updateDots();
-    }
-
-    track.addEventListener('transitionend', () => {
-        isAnimating = false;
-        if (current === 0)         { current = total;     setPos(current, false); }
-        else if (current === total + 1) { current = 1;    setPos(current, false); }
-        updateDots();
     });
 
-    btnPrev.addEventListener('click', () => goTo(current - 1));
-    btnNext.addEventListener('click', () => goTo(current + 1));
-
-    let touchX = null;
-    track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend',   e => {
-        if (touchX === null) return;
-        const dx = e.changedTouches[0].clientX - touchX;
-        if (Math.abs(dx) > 40) goTo(current + (dx < 0 ? 1 : -1));
-        touchX = null;
+    // Cerrar modales con Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.active').forEach(function(m) {
+                m.classList.remove('active');
+            });
+            if (!lightboxOpen) document.body.style.overflow = '';
+        }
     });
 
-    let timer = setInterval(() => goTo(current + 1), 6000);
-    const section = document.getElementById('testimonios');
-    section.addEventListener('mouseenter', () => clearInterval(timer));
-    section.addEventListener('mouseleave', () => {
-        clearInterval(timer);
-        timer = setInterval(() => goTo(current + 1), 6000);
+    /* ==========================================================
+       RECALCULAR CARRUSEL AL GIRAR EL CELULAR
+    ========================================================== */
+    var resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            projIndex = Math.min(projIndex, getMaxIndex());
+            var cardWidth = projCards[0].offsetWidth + 22;
+            projTrack.style.transition = 'none';
+            projTrack.style.transform = 'translateX(' + (-projIndex * cardWidth) + 'px)';
+        }, 150);
     });
+
 })();
 </script>
 
