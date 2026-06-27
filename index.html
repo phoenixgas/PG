@@ -1097,6 +1097,14 @@ header::after {
 @media (max-width: 640px) {
     .hero-particle { display: none; }
 }
+        /* ============================================================
+   EFECTO 6 — TILT 3D SUTIL EN TARJETAS DE PROYECTO
+============================================================ */
+.proj-card {
+    transform-style: preserve-3d;
+    perspective: 800px;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
     </style>
    <!-- Meta Pixel Code -->
 <script>
@@ -1177,6 +1185,11 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
      HERO — SECCIÓN PRINCIPAL
 ============================================================ -->
 <section class="hero" id="inicio">
+    <!-- Partículas decorativas -->
+    <div class="hero-particles" id="heroParticles"></div>
+
+    <div class="container hero-grid">
+        ...
     <div class="container hero-grid">
         <div class="hero-text">
             <span class="eyebrow">
