@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhoenixGas | Instalaciones de Gas Certificadas en Bolivia</title>
+
+    <!-- SEO y Open Graph (CORREGIDO: agregado) -->
+    <meta name="description" content="PhoenixGas — Instalaciones de gas certificadas en Bolivia. Domiciliarias, comerciales e industriales. Pruebas de hermeticidad documentadas en cada entrega.">
+    <meta property="og:title" content="PhoenixGas | Instalaciones de Gas Certificadas en Bolivia">
+    <meta property="og:description" content="Técnicos certificados. Gas domiciliario, comercial e industrial en Santa Cruz, Bolivia. Inspección gratis, prueba de presión incluida.">
+    <meta property="og:image" content="image/logofenix02.jpg">
+    <meta property="og:type" content="website">
+    <meta name="robots" content="index, follow">
+
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -123,6 +132,9 @@
         top: 0;
         z-index: 500;
         border-bottom: 1px solid rgba(255,255,255,.06);
+        /* NECESARIO para que ::after (progress bar) funcione */
+        position: sticky;
+        overflow: visible;
     }
     .nav-container {
         display: flex;
@@ -217,6 +229,7 @@
     }
     .hero-text h1 { font-size: 48px; margin-bottom: 22px; font-weight: 700; }
     .hero-text h1 .accent { color: var(--flame); }
+    .hero-text h1 .texto-principal { color: #F4E2BB; }
     .hero-text p { font-size: 18px; color: #b7c8de; margin-bottom: 34px; max-width: 520px; }
     .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
     .hero-stats { display: flex; gap: 36px; flex-wrap: wrap; }
@@ -329,12 +342,31 @@
         border-radius: var(--radius);
         border: 1px solid #e7edf6;
         transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+        position: relative;
+        overflow: hidden;
     }
     .service-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 20px 40px -24px rgba(12,27,46,.2);
         border-color: var(--flame-soft);
     }
+    /* Spotlight effect */
+    .service-card::before {
+        content: '';
+        position: absolute;
+        width: 280px;
+        height: 280px;
+        background: radial-gradient(circle, rgba(255,106,43,0.13) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: var(--spot-opacity, 0);
+        transform: translate(-50%, -50%);
+        left: var(--spot-x, 50%);
+        top: var(--spot-y, 50%);
+        transition: opacity 0.3s ease;
+        z-index: 0;
+    }
+    .service-card > * { position: relative; z-index: 1; }
     .service-icon {
         width: 56px; height: 56px;
         border-radius: 13px;
@@ -400,20 +432,11 @@
     .media-placeholder > p   { font-size: 14px; color: #93a8c4; max-width: 280px; }
 
     /* ============================================================
-       GALERÍA DE PROYECTOS (CARRUSEL INFINITO AUTOPLAY)
+       GALERÍA DE PROYECTOS
     ============================================================ */
     .gallery { background: var(--paper); overflow: hidden; }
-
-    .proj-window {
-        overflow: hidden;
-        border-radius: var(--radius);
-    }
-    .proj-track {
-        display: flex;
-        gap: 22px;
-        width: 100%;
-    }
-
+    .proj-window { overflow: hidden; border-radius: var(--radius); }
+    .proj-track { display: flex; gap: 22px; width: 100%; }
     .proj-card {
         flex: 0 0 calc(33.333% - 15px);
         border-radius: var(--radius);
@@ -422,13 +445,14 @@
         overflow: hidden;
         cursor: pointer;
         position: relative;
-        transition: transform .3s ease, box-shadow .3s ease;
+        transition: transform .35s ease, box-shadow .35s ease;
+        transform-style: preserve-3d;
+        perspective: 800px;
     }
     .proj-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 20px 40px -18px rgba(12,27,46,.35);
     }
-
     .proj-mosaic {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -459,22 +483,14 @@
         color: #5e7a9b;
         font-size: 20px;
     }
-
-    .proj-info {
-        padding: 18px 20px;
-    }
-    .proj-info h4 {
-        color: #fff;
-        font-size: 15.5px;
-        margin-bottom: 4px;
-    }
+    .proj-info { padding: 18px 20px; }
+    .proj-info h4 { color: #fff; font-size: 15.5px; margin-bottom: 4px; }
     .proj-info span {
         font-size: 12.5px;
         color: var(--flame-soft);
         text-transform: uppercase;
         letter-spacing: .06em;
     }
-
     .proj-view-icon {
         position: absolute;
         top: 14px; right: 14px;
@@ -490,7 +506,6 @@
         backdrop-filter: blur(3px);
         z-index: 2;
     }
-
     .gallery .carousel-controls {
         display: flex;
         justify-content: center;
@@ -512,15 +527,8 @@
     }
     .carousel-btn:hover { background: var(--flame); color: #fff; border-color: var(--flame); }
 
-    @media (max-width: 980px) {
-        .proj-card { flex: 0 0 calc(50% - 11px); }
-    }
-    @media (max-width: 620px) {
-        .proj-card { flex: 0 0 88%; }
-    }
-
     /* ============================================================
-       LIGHTBOX DE PROYECTO
+       LIGHTBOX DE PROYECTO — solo uno (CORREGIDO: eliminado el duplicado)
     ============================================================ */
     .lightbox-overlay {
         display: none;
@@ -534,7 +542,6 @@
         padding: 24px;
     }
     .lightbox-overlay.open { display: flex; }
-
     .lightbox-box {
         width: 100%;
         max-width: 1000px;
@@ -562,7 +569,6 @@
         transition: color .2s ease;
     }
     .lightbox-close:hover { color: var(--flame); }
-
     .lightbox-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -590,12 +596,8 @@
     }
     .lightbox-grid .lb-empty { color: #5e7a9b; font-size: 22px; }
 
-    @media (max-width: 640px) {
-        .lightbox-grid { grid-template-columns: 1fr; }
-    }
-
     /* ============================================================
-       TESTIMONIOS (CARRUSEL INFINITO)
+       TESTIMONIOS
     ============================================================ */
     .testimonials {
         background: linear-gradient(160deg, var(--ink) 0%, var(--ink-soft) 100%);
@@ -603,7 +605,6 @@
     }
     .testimonials .section-head h2 { color: #fff; }
     .testimonials .section-head p  { color: #aebedb; }
-
     .testi-outer {
         display: flex;
         align-items: center;
@@ -611,11 +612,7 @@
         max-width: 860px;
         margin: 0 auto;
     }
-    .testi-window {
-        flex: 1;
-        overflow: hidden;
-        border-radius: var(--radius);
-    }
+    .testi-window { flex: 1; overflow: hidden; border-radius: var(--radius); }
     .testi-track { display: flex; width: 100%; }
     .testi-slide {
         flex: 0 0 100%;
@@ -633,7 +630,6 @@
     .testi-quote::after  { content: '\201D'; }
     .testi-author { font-weight: 700; font-family: 'Space Grotesk', sans-serif; color: #fff; font-size: 16px; }
     .testi-role   { font-size: 13px; color: #93a8c4; margin-top: 4px; }
-
     .testi-nav-btn {
         flex-shrink: 0;
         width: 48px; height: 48px;
@@ -649,7 +645,6 @@
         transition: background .2s, border-color .2s;
     }
     .testi-nav-btn:hover { background: var(--flame); border-color: var(--flame); }
-
     .testi-dots { display: flex; justify-content: center; gap: 10px; margin-top: 26px; }
     .testi-dot {
         width: 9px; height: 9px;
@@ -780,66 +775,7 @@
     .footer-legal-links { display: flex; gap: 22px; flex-wrap: wrap; }
 
     /* ============================================================
-       RESPONSIVE
-    ============================================================ */
-    @media (max-width: 1080px) {
-        nav.links { display: none; }
-        .hero-grid { grid-template-columns: 1fr; }
-        .hero-visual { order: -1; max-width: 680px; margin: 0 auto; }
-        .showcase-grid, .showcase-grid.reverse { grid-template-columns: 1fr; }
-        .showcase-grid.reverse .showcase-text,
-        .showcase-grid.reverse .media-placeholder { order: initial; }
-        .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
-    }
-            @media (max-width: 640px) {
-        .hero-text h1 { font-size: 32px; }
-        section { padding: 64px 0; }
-        .section-head h2 { font-size: 26px; }
-        .testi-slide { padding: 28px 20px; }
-        .testi-quote { font-size: 15px; }
-        .testi-nav-btn { width: 40px; height: 40px; }
-        .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-        .footer-bottom { flex-direction: column; }
-        .emergency-tag { display: none; }
-
-        /* Gauge más grande en móvil */
-        .gauge {
-            max-width: 420px !important;
-            margin: 0 auto;
-        }
-        .gauge-inner {
-            width: 85% !important;
-            height: 85% !important;
-            padding: 16px !important;
-        }
-        .gauge-inner img {
-            width: 110px !important;
-            height: 110px !important;
-        }
-        .gauge-inner .gauge-title {
-            font-size: 22px !important;
-        }
-        .gauge-inner .gauge-sub {
-            font-size: 16px !important;
-        }
-        .gauge-tick {
-            font-size: 10px !important;
-        }
-
-        .whatsapp-floating {
-            bottom: 16px;
-            right: 16px;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
-        }
-
-        .modal-body { padding: 24px 20px; }
-        .modal-header { padding: 16px 20px; }
-        .modal-header h2 { font-size: 17px; }
-    }
-    /* ============================================================
-       MODALES LEGALES (ventanas superpuestas)
+       MODALES LEGALES
     ============================================================ */
     .modal-overlay {
         display: none;
@@ -851,15 +787,12 @@
         align-items: center;
         justify-content: center;
         padding: 24px;
-        animation: fadeIn .3s ease;
     }
     .modal-overlay.active { display: flex; }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: scale(.95); }
-        to   { opacity: 1; transform: scale(1); }
+    @keyframes slideUp {
+        from { transform: translateY(30px); opacity: 0; }
+        to   { transform: translateY(0); opacity: 1; }
     }
-
     .modal-container {
         background: #fff;
         max-width: 820px;
@@ -872,11 +805,6 @@
         flex-direction: column;
         animation: slideUp .3s ease;
     }
-    @keyframes slideUp {
-        from { transform: translateY(30px); opacity: 0; }
-        to   { transform: translateY(0); opacity: 1; }
-    }
-
     .modal-header {
         background: var(--ink);
         color: #fff;
@@ -894,10 +822,7 @@
         align-items: center;
         gap: 12px;
     }
-    .modal-header h2 i {
-        color: var(--flame);
-        font-size: 22px;
-    }
+    .modal-header h2 i { color: var(--flame); font-size: 22px; }
     .modal-close {
         background: none;
         border: none;
@@ -908,11 +833,7 @@
         line-height: 1;
         padding: 0 6px;
     }
-    .modal-close:hover {
-        color: var(--flame);
-        transform: rotate(90deg);
-    }
-
+    .modal-close:hover { color: var(--flame); transform: rotate(90deg); }
     .modal-body {
         padding: 40px 40px 30px;
         overflow-y: auto;
@@ -932,11 +853,7 @@
         line-height: 1.7;
         margin-bottom: 12px;
     }
-    .modal-body ul {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 16px 0;
-    }
+    .modal-body ul { list-style: none; padding: 0; margin: 0 0 16px 0; }
     .modal-body ul li {
         padding: 6px 0 6px 28px;
         position: relative;
@@ -962,172 +879,143 @@
         color: var(--text-dim);
     }
 
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+        opacity: 0;
+        transform: translateX(-40px);
+        transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+        opacity: 0;
+        transform: translateX(40px);
+        transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+    @media (prefers-reduced-motion: reduce) {
+        .reveal, .reveal-left, .reveal-right { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ============================================================
+       PROGRESS BAR DE SCROLL EN HEADER
+    ============================================================ */
+    header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        width: var(--scroll-progress, 0%);
+        background: linear-gradient(90deg, var(--flame), var(--flame-soft));
+        transition: width 0.1s linear;
+        z-index: 10;
+    }
+
+    /* ============================================================
+       PARTÍCULAS EN EL HERO
+    ============================================================ */
+    .hero-particles {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .hero-particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: rgba(255, 179, 138, 0.35);
+        animation: particleFloat linear infinite;
+    }
+    @keyframes particleFloat {
+        0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+        10%  { opacity: 1; }
+        90%  { opacity: 1; }
+        100% { transform: translateY(-400px) translateX(40px) scale(0.3); opacity: 0; }
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1080px) {
+        nav.links { display: none; }
+        .hero-grid { grid-template-columns: 1fr; }
+        .hero-visual { order: -1; max-width: 680px; margin: 0 auto; }
+        .showcase-grid,
+        .showcase-grid.reverse { grid-template-columns: 1fr; }
+        .showcase-grid.reverse .showcase-text,
+        .showcase-grid.reverse .media-placeholder { order: initial; }
+        .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+    }
+    @media (max-width: 980px) {
+        .proj-card { flex: 0 0 calc(50% - 11px); }
+    }
     @media (max-width: 640px) {
+        .hero-text h1 { font-size: 32px; }
+        section { padding: 64px 0; }
+        .section-head h2 { font-size: 26px; }
+        .testi-slide { padding: 28px 20px; }
+        .testi-quote { font-size: 15px; }
+        .testi-nav-btn { width: 40px; height: 40px; }
+        .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+        .footer-bottom { flex-direction: column; }
+        .emergency-tag { display: none; }
+        .gauge { max-width: 420px !important; margin: 0 auto; }
+        .gauge-inner { width: 85% !important; height: 85% !important; padding: 16px !important; }
+        .gauge-inner img { width: 110px !important; height: 110px !important; }
+        .gauge-inner .gauge-title { font-size: 22px !important; }
+        .gauge-inner .gauge-sub { font-size: 16px !important; }
+        .gauge-tick { font-size: 10px !important; }
+        .whatsapp-floating { bottom: 16px; right: 16px; width: 50px; height: 50px; font-size: 24px; }
+        .proj-card { flex: 0 0 88%; }
+        .lightbox-grid { grid-template-columns: 1fr; }
         .modal-body { padding: 24px 20px; }
         .modal-header { padding: 16px 20px; }
         .modal-header h2 { font-size: 17px; }
+        .hero-particle { display: none; }
     }
-        .hero-text h1 .texto-principal { 
-    color: #F4E2BB;  /* <--- PON AQUÍ EL COLOR QUE QUIERAS */
-}
-        /* ============================================================
-   EFECTO 1 — SCROLL REVEAL (aparecer al hacer scroll)
-============================================================ */
-.reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-/* Variante: entrada desde la izquierda */
-.reveal-left {
-    opacity: 0;
-    transform: translateX(-40px);
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.reveal-left.visible {
-    opacity: 1;
-    transform: translateX(0);
-}
-/* Variante: entrada desde la derecha */
-.reveal-right {
-    opacity: 0;
-    transform: translateX(40px);
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.reveal-right.visible {
-    opacity: 1;
-    transform: translateX(0);
-}
-/* Retrasos escalonados para grupos de elementos */
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
-.reveal-delay-5 { transition-delay: 0.5s; }
-
-/* Respetar preferencia de reducir movimiento */
-@media (prefers-reduced-motion: reduce) {
-    .reveal, .reveal-left, .reveal-right {
-        opacity: 1;
-        transform: none;
-        transition: none;
-    }
-}
-        /* ============================================================
-   EFECTO 3 — BRILLO QUE SIGUE EL MOUSE (spotlight) — ACTUALIZADO
-============================================================ */
-.service-card {
-    position: relative;
-    overflow: hidden;
-}
-.service-card::before {
-    content: '';
-    position: absolute;
-    width: 280px;
-    height: 280px;
-    background: radial-gradient(circle, rgba(255,106,43,0.13) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: var(--spot-opacity, 0);
-    transform: translate(-50%, -50%);
-    left: var(--spot-x, 50%);
-    top: var(--spot-y, 50%);
-    transition: opacity 0.3s ease;
-    z-index: 0;
-}
-.service-card > * {
-    position: relative;
-    z-index: 1;
-}
-        /* ============================================================
-   EFECTO 4 — LÍNEA DE PROGRESO DE SCROLL EN HEADER
-============================================================ */
-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    width: var(--scroll-progress, 0%);
-    background: linear-gradient(90deg, var(--flame), var(--flame-soft));
-    transition: width 0.1s linear;
-    z-index: 10;
-}
-        /* ============================================================
-   EFECTO 5 — PARTÍCULAS EN EL HERO
-============================================================ */
-.hero-particles {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 1;
-}
-.hero-particle {
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: rgba(255, 179, 138, 0.35);
-    animation: particleFloat linear infinite;
-}
-@keyframes particleFloat {
-    0% {
-        transform: translateY(0) translateX(0) scale(1);
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-400px) translateX(40px) scale(0.3);
-        opacity: 0;
-    }
-}
-@media (max-width: 640px) {
-    .hero-particle { display: none; }
-}
-        /* ============================================================
-   EFECTO 6 — TILT 3D SUTIL EN TARJETAS DE PROYECTO
-============================================================ */
-.proj-card {
-    transform-style: preserve-3d;
-    perspective: 800px;
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
-}
     </style>
-   <!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1542492544236198');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1542492544236198');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 <body>
-    
-    <!-- ============================================================
-     LIGHTBOX DE PROYECTO (overlay DOM — se abre sobre la página)
+
+<!-- ============================================================
+     LIGHTBOX DE PROYECTO — único, sin duplicado (CORREGIDO)
 ============================================================ -->
 <div class="lightbox-overlay" id="lightbox">
     <div class="lightbox-box">
@@ -1182,12 +1070,10 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
 <main class="site-main">
 
 <!-- ============================================================
-     HERO — SECCIÓN PRINCIPAL
+     HERO
 ============================================================ -->
 <section class="hero" id="inicio">
-    <!-- Partículas decorativas -->
     <div class="hero-particles" id="heroParticles"></div>
-    
     <div class="container hero-grid">
         <div class="hero-text">
             <span class="eyebrow">
@@ -1196,7 +1082,7 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
             </span>
             <h1>
                 <span class="texto-principal">Instalaciones de gas hechas para</span>
-                <span class="accent">durar y proteger</span>
+                <span class="accent"> durar y proteger</span>
             </h1>
             <p>
                 Diseñamos, instalamos y mantenemos redes de gas domiciliarias,
@@ -1278,7 +1164,7 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                 <h3>Asesoría y certificación</h3>
                 <p>Te acompañamos en los trámites de habilitación y emitimos certificados de prueba de presión.</p>
             </div>
-            <div class="service-card service-card reveal">
+            <div class="service-card reveal">
                 <div class="service-icon"><i class="fa-solid fa-truck-fast"></i></div>
                 <h3>Atención de emergencias</h3>
                 <p>Olor a gas, fugas o fallas urgentes: nuestro equipo responde los 7 días de la semana.</p>
@@ -1298,7 +1184,7 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
             <p>No arriesgues el patrimonio de tu familia o negocio. Así trabajamos.</p>
         </div>
 
-        <!-- BLOQUE 1: Pruebas de presión -->
+        <!-- BLOQUE 1 -->
         <div class="showcase-grid">
             <div class="showcase-text reveal-left">
                 <span class="section-eyebrow">Normas estrictas</span>
@@ -1319,7 +1205,7 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
             </div>
         </div>
 
-        <!-- BLOQUE 2: Materiales -->
+        <!-- BLOQUE 2 -->
         <div class="showcase-grid reverse">
             <div class="showcase-text reveal-right">
                 <span class="section-eyebrow">Materiales y equipo</span>
@@ -1332,14 +1218,15 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                 </ul>
             </div>
             <div class="media-placeholder reveal-left">
-                <img src="image/Almacen logo.jpg" alt="Materiales certificados y equipo de trabajo" loading="lazy">
+                <!-- CORREGIDO: espacio en nombre de archivo codificado -->
+                <img src="image/Almacen%20logo.jpg" alt="Materiales certificados y equipo de trabajo" loading="lazy">
             </div>
         </div>
     </div>
 </section>
 
 <!-- ============================================================
-     GALERÍA DE PROYECTOS (20 proyectos, carrusel infinito)
+     GALERÍA DE PROYECTOS
 ============================================================ -->
 <section class="gallery" id="trabajos">
     <div class="container">
@@ -1352,7 +1239,7 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
         <div class="proj-window">
             <div class="proj-track" id="projTrack">
 
-                <!-- ===== PROYECTO 1 ===== -->
+                <!-- PROYECTO 1 -->
                 <div class="proj-card" data-titulo="Instalación Multifamiliar" data-zona="Condominio Uzeda, Santa Cruz">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
@@ -1361,13 +1248,10 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                         <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.50.jpeg" alt="Multifamiliar 3" loading="lazy"></div>
                         <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.50%20(1).jpeg" alt="Multifamiliar 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalación Multifamiliar</h4>
-                        <span>Edifico condominio Uzeda, Santa Cruz</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación Multifamiliar</h4><span>Edificio Condominio Uzeda, Santa Cruz</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 2 ===== -->
+                <!-- PROYECTO 2 -->
                 <div class="proj-card" data-titulo="Instalación domiciliaria" data-zona="Av. Juan Pablo II">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
@@ -1376,13 +1260,10 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                         <div class="ph"><img src="image/WhatsApp%20Image%202026-06-08%20at%2007.32.20%20(1)%20-%20Editado.jpg" alt="Domiciliaria 3" loading="lazy"></div>
                         <div class="ph"><img src="image/WhatsApp%20Image%202026-06-08%20at%2007.32.20.jpeg" alt="Domiciliaria 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalación domiciliaria</h4>
-                        <span>Av. Juan Pablo II</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación domiciliaria</h4><span>Av. Juan Pablo II</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 3 ===== -->
+                <!-- PROYECTO 3 -->
                 <div class="proj-card" data-titulo="Mantenimiento y detección de fugas" data-zona="Plan 3000">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
@@ -1391,13 +1272,10 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                         <div class="ph"><img src="image/480531865_948257170753709_2123804611956353256_n.jpg" alt="Fugas 3" loading="lazy"></div>
                         <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.34.58.jpeg" alt="Fugas 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Mantenimiento y detección de fugas</h4>
-                        <span>Plan 3000</span>
-                    </div>
+                    <div class="proj-info"><h4>Mantenimiento y detección de fugas</h4><span>Plan 3000</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 4 ===== -->
+                <!-- PROYECTO 4 -->
                 <div class="proj-card" data-titulo="Instalación Comercial" data-zona="Barrio Polanco">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
@@ -1406,13 +1284,10 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                         <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.41.10.jpeg" alt="Comercial 3" loading="lazy"></div>
                         <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.41.12.jpeg" alt="Comercial 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalación Comercial</h4>
-                        <span>Barrio Polanco</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación Comercial</h4><span>Barrio Polanco</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 5 ===== -->
+                <!-- PROYECTO 5 -->
                 <div class="proj-card" data-titulo="Instalación Particular" data-zona="Barrio Hamacas">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
@@ -1421,28 +1296,22 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                         <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.20.43.jpeg" alt="Particular 3" loading="lazy"></div>
                         <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.20.44%20(2).jpeg" alt="Particular 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalación Particular</h4>
-                        <span>Barrio Hamacas</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación Particular</h4><span>Barrio Hamacas</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 6 ===== -->
-                <div class="proj-card" data-titulo="instalacion – particular" data-zona="Las Palmas">
+                <!-- PROYECTO 6 -->
+                <div class="proj-card" data-titulo="Instalación Particular" data-zona="Las Palmas">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/480856189_948371117408981_7614207527074623161_n.jpg" alt="Mantenimiento condominio 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/480864957_948257177420375_5192030983309898058_n.jpg" alt="Mantenimiento condominio 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/481141426_948371250742301_8960070718849419314_n.jpg" alt="Mantenimiento condominio 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/481250167_948371487408944_1025146846743348997_n.jpg" alt="Mantenimiento condominio 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/480856189_948371117408981_7614207527074623161_n.jpg" alt="Las Palmas 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/480864957_948257177420375_5192030983309898058_n.jpg" alt="Las Palmas 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/481141426_948371250742301_8960070718849419314_n.jpg" alt="Las Palmas 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/481250167_948371487408944_1025146846743348997_n.jpg" alt="Las Palmas 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>instalacion – particular</h4>
-                        <span>Las Palmas</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación Particular</h4><span>Las Palmas</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 7 ===== -->
+                <!-- PROYECTO 7 -->
                 <div class="proj-card" data-titulo="Instalación domiciliar" data-zona="Santa Cruz">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
@@ -1451,208 +1320,165 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                         <div class="ph"><img src="image/480676483_948371254075634_7269769103883689096_n.jpg" alt="Residencial 3" loading="lazy"></div>
                         <div class="ph"><img src="image/481080835_948371384075621_5812237399566348623_n.jpg" alt="Residencial 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalación domiciliar</h4>
-                        <span>Santa Cruz</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación domiciliar</h4><span>Santa Cruz</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 8 ===== -->
-                <div class="proj-card" data-titulo="Instalacion particular" data-zona="Zona Norte">
+                <!-- PROYECTO 8 -->
+                <div class="proj-card" data-titulo="Instalación particular" data-zona="Zona Norte">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/480802785_948371127408980_4058095544826103156_n.jpg" alt="Corporativo 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/480827117_948371317408961_8116556319169154961_n.jpg" alt="Corporativo 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/481176388_948371104075649_9088130520160249449_n.jpg" alt="Corporativo 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/481193280_948371270742299_4012384959067606963_n.jpg" alt="Corporativo 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/480802785_948371127408980_4058095544826103156_n.jpg" alt="Norte 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/480827117_948371317408961_8116556319169154961_n.jpg" alt="Norte 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/481176388_948371104075649_9088130520160249449_n.jpg" alt="Norte 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/481193280_948371270742299_4012384959067606963_n.jpg" alt="Norte 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalacion particular</h4>
-                        <span>Zona Norte</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación particular</h4><span>Zona Norte</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 9 ===== -->
+                <!-- PROYECTO 9 -->
                 <div class="proj-card" data-titulo="Edificio Condominio Lino" data-zona="Av. Trompillo">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/480572871_948371470742279_9079963642762771873_n.jpg" alt="Planta 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/480590207_948371390742287_8008284551949943694_n.jpg" alt="Planta 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/480837518_948257190753707_3346081580778376160_n.jpg" alt="Planta 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/481053335_948257240753702_7221153778550091287_n.jpg" alt="Planta 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/480572871_948371470742279_9079963642762771873_n.jpg" alt="Lino 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/480590207_948371390742287_8008284551949943694_n.jpg" alt="Lino 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/480837518_948257190753707_3346081580778376160_n.jpg" alt="Lino 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/481053335_948257240753702_7221153778550091287_n.jpg" alt="Lino 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Edificio Condominio Lino</h4>
-                        <span>Av. Trompillo</span>
-                    </div>
+                    <div class="proj-info"><h4>Edificio Condominio Lino</h4><span>Av. Trompillo</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 10 ===== -->
+                <!-- PROYECTO 10 -->
                 <div class="proj-card" data-titulo="Cocina industrial" data-zona="Av. San Martín">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/480566593_948371240742302_1307846097295277427_n.jpg" alt="Cocina industrial 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/Gemini_Generated_Image_xvh510xvh510xvh5.jpg" alt="Cocina industrial 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/Sin títul000o.jpg" alt="Cocina industrial 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2025-12-06 at 01.39.33 (1).jpg" alt="Cocina industrial 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/480566593_948371240742302_1307846097295277427_n.jpg" alt="Cocina 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/Gemini_Generated_Image_xvh510xvh510xvh5.jpg" alt="Cocina 2" loading="lazy"></div>
+                        <!-- CORREGIDO: nombre con tilde y espacio codificados -->
+                        <div class="ph"><img src="image/Sin%20t%C3%ADtul000o.jpg" alt="Cocina 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.39.33%20(1).jpg" alt="Cocina 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Cocina industrial</h4>
-                        <span>Av. San Martín</span>
-                    </div>
+                    <div class="proj-info"><h4>Cocina industrial</h4><span>Av. San Martín</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 11 ===== -->
-                <div class="proj-card" data-titulo="Instalacion Multifamiliar" data-zona="Edificio Ramada">
+                <!-- PROYECTO 11 -->
+                <div class="proj-card" data-titulo="Instalación Multifamiliar" data-zona="Edificio Ramada">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/WhatsApp Image 2025-12-06 at 01.39.42 (1).jpeg" alt="Preventivo 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2025-12-06 at 01.33.07 (2).jpeg" alt="Preventivo 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2025-12-06 at 01.39.43.jpeg" alt="Preventivo 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2025-12-06 at 01.40.33.jpeg" alt="Preventivo 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.39.42%20(1).jpeg" alt="Ramada 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.33.07%20(2).jpeg" alt="Ramada 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.39.43.jpeg" alt="Ramada 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.40.33.jpeg" alt="Ramada 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalacion Multifamiliar</h4>
-                        <span>Edificio Ramada</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación Multifamiliar</h4><span>Edificio Ramada</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 12 ===== -->
-                <div class="proj-card" data-titulo="instalacion domiciliar" data-zona="Urbanizacion palmira">
+                <!-- PROYECTO 12 -->
+                <div class="proj-card" data-titulo="Instalación domiciliar" data-zona="Urbanización Palmira">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/WhatsApp Image 2025-12-06 at 01.40.34 (3).jpeg" alt="Condominio residencial 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2025-12-06 at 01.33.00 (2).jpeg" alt="Condominio residencial 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2025-12-06 at 01.33.00 (1).jpeg" alt="Condominio residencial 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2025-12-06 at 01.39.36 (2).jpeg" alt="Condominio residencial 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.40.34%20(3).jpeg" alt="Palmira 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.33.00%20(2).jpeg" alt="Palmira 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.33.00%20(1).jpeg" alt="Palmira 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.39.36%20(2).jpeg" alt="Palmira 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>instalacion domiciliar</h4>
-                        <span>Urbanizacion palmira</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación domiciliar</h4><span>Urbanización Palmira</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 13 ===== -->
-                <div class="proj-card" data-titulo="Instalacion Domiciliar" data-zona="Radial 26">
+                <!-- PROYECTO 13 -->
+                <div class="proj-card" data-titulo="Instalación Domiciliar" data-zona="Radial 26">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/481084291_948257167420376_961160265949066711_n.jpg" alt="Reforma 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2025-11-12 at 21.03.23.jpeg" alt="Reforma 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2025-12-06 at 01.26.27 (1).jpeg" alt="Reforma 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/481181531_948371097408983_3599383505446100516_n.jpg" alt="Reforma 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/481084291_948257167420376_961160265949066711_n.jpg" alt="Radial 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-11-12%20at%2021.03.23.jpeg" alt="Radial 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202025-12-06%20at%2001.26.27%20(1).jpeg" alt="Radial 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/481181531_948371097408983_3599383505446100516_n.jpg" alt="Radial 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalacion Domiciliar</h4>
-                        <span>Radial 26</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación Domiciliar</h4><span>Radial 26</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 14 ===== -->
+                <!-- PROYECTO 14 -->
                 <div class="proj-card" data-titulo="Instalación Particular" data-zona="Urubó">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.33.53 (1).jpeg" alt="Calefones 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.33.53 (2).jpeg" alt="Calefones 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.33.54.jpeg" alt="Calefones 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.34.01.jpeg" alt="Calefones 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.33.53%20(1).jpeg" alt="Urubo 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.33.53%20(2).jpeg" alt="Urubo 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.33.54.jpeg" alt="Urubo 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.34.01.jpeg" alt="Urubo 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalación Particular</h4>
-                        <span>Urubó</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación Particular</h4><span>Urubó</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 15 ===== -->
-                <div class="proj-card" data-titulo="Devolucion Medidor y Mantenimiento" data-zona="Av. Alemana">
+                <!-- PROYECTO 15 -->
+                <div class="proj-card" data-titulo="Devolución Medidor y Mantenimiento" data-zona="Av. Alemana">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.34.47.jpeg" alt="Restaurante 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.34.48.jpeg" alt="Restaurante 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.34.49.jpeg" alt="Restaurante 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.34.51 (1).jpeg" alt="Restaurante 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.34.47.jpeg" alt="Medidor 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.34.48.jpeg" alt="Medidor 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.34.49.jpeg" alt="Medidor 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.34.51%20(1).jpeg" alt="Medidor 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Devolucion Medidor y Mantenimiento</h4>
-                        <span>Av. Alemana</span>
-                    </div>
+                    <div class="proj-info"><h4>Devolución Medidor y Mantenimiento</h4><span>Av. Alemana</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 16 ===== -->
+                <!-- PROYECTO 16 -->
                 <div class="proj-card" data-titulo="Reglaje e Inspección de fugas" data-zona="Plan 3000">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.34.03.jpeg" alt="Fugas 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.34.04.jpeg" alt="Fugas 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.34.52.jpeg" alt="Fugas 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.35.00.jpeg" alt="Fugas 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.34.03.jpeg" alt="Reglaje 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.34.04.jpeg" alt="Reglaje 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.34.52.jpeg" alt="Reglaje 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.35.00.jpeg" alt="Reglaje 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Reglaje e Inspección de fugas</h4>
-                        <span>Plan 3000</span>
-                    </div>
+                    <div class="proj-info"><h4>Reglaje e Inspección de fugas</h4><span>Plan 3000</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 17 ===== -->
-                <div class="proj-card" data-titulo="Instalacion particular" data-zona="Doble via la Guardia">
+                <!-- PROYECTO 17 -->
+                <div class="proj-card" data-titulo="Instalación particular" data-zona="Doble vía La Guardia">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.41.11 (1).jpeg" alt="Reguladores 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.41.14 (1).jpeg" alt="Reguladores 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.41.14 (2).jpeg" alt="Reguladores 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.41.15.jpeg" alt="Reguladores 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.41.11%20(1).jpeg" alt="Guardia 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.41.14%20(1).jpeg" alt="Guardia 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.41.14%20(2).jpeg" alt="Guardia 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.41.15.jpeg" alt="Guardia 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalacion particular</h4>
-                        <span>Doble via la Guardia</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación particular</h4><span>Doble vía La Guardia</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 18 ===== -->
-                <div class="proj-card" data-titulo="Instalacion Particular" data-zona="Barrio Chacarilla">
+                <!-- PROYECTO 18 -->
+                <div class="proj-card" data-titulo="Instalación Particular" data-zona="Barrio Chacarilla">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.40.01.jpeg" alt="Lavandería 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.39.41 (1).jpeg" alt="Lavandería 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.39.52.jpeg" alt="Lavandería 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 12.41.18 (1).jpeg" alt="Lavandería 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.40.01.jpeg" alt="Chacarilla 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.41%20(1).jpeg" alt="Chacarilla 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.52.jpeg" alt="Chacarilla 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2012.41.18%20(1).jpeg" alt="Chacarilla 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalacion Particular</h4>
-                        <span>Barrio Chacarilla</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalación Particular</h4><span>Barrio Chacarilla</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 19 ===== -->
-                <div class="proj-card" data-titulo="diversas instalaciones Domesticas" data-zona="Barrio Calama">
+                <!-- PROYECTO 19 -->
+                <div class="proj-card" data-titulo="Diversas instalaciones domésticas" data-zona="Barrio Calama">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.39.34.jpeg" alt="Certificación 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.39.40 (1).jpeg" alt="Certificación 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.39.40.jpeg" alt="Certificación 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.39.47.jpeg" alt="Certificación 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.34.jpeg" alt="Calama 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.40%20(1).jpeg" alt="Calama 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.40.jpeg" alt="Calama 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.47.jpeg" alt="Calama 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>diversas instalaciones Domesticas</h4>
-                        <span>Barrio Calama</span>
-                    </div>
+                    <div class="proj-info"><h4>Diversas instalaciones domésticas</h4><span>Barrio Calama</span></div>
                 </div>
 
-                <!-- ===== PROYECTO 20 ===== -->
-                <div class="proj-card" data-titulo="Instalaciones domesticas" data-zona="Barrio Cupesi">
+                <!-- PROYECTO 20 -->
+                <div class="proj-card" data-titulo="Instalaciones domésticas" data-zona="Barrio Cupesi">
                     <div class="proj-view-icon"><i class="fa-solid fa-expand"></i></div>
                     <div class="proj-mosaic">
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.39.47 (2).jpeg" alt="Mantenimiento anual 1" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.39.57.jpeg" alt="Mantenimiento anual 2" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.39.58.jpeg" alt="Mantenimiento anual 3" loading="lazy"></div>
-                        <div class="ph"><img src="image/WhatsApp Image 2026-06-18 at 13.39.59 (1).jpeg" alt="Mantenimiento anual 4" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.47%20(2).jpeg" alt="Cupesi 1" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.57.jpeg" alt="Cupesi 2" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.58.jpeg" alt="Cupesi 3" loading="lazy"></div>
+                        <div class="ph"><img src="image/WhatsApp%20Image%202026-06-18%20at%2013.39.59%20(1).jpeg" alt="Cupesi 4" loading="lazy"></div>
                     </div>
-                    <div class="proj-info">
-                        <h4>Instalaciones domesticas </h4>
-                        <span>Barrio Cupesi</span>
-                    </div>
+                    <div class="proj-info"><h4>Instalaciones domésticas</h4><span>Barrio Cupesi</span></div>
                 </div>
-
-                <!-- ===== FIN DE PROYECTOS ===== -->
 
             </div><!-- fin proj-track -->
         </div><!-- fin proj-window -->
@@ -1669,25 +1495,7 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
 </section>
 
 <!-- ============================================================
-     LIGHTBOX
-============================================================ -->
-<div class="lightbox-overlay" id="lightboxOverlay">
-    <div class="lightbox-box">
-        <div class="lightbox-head">
-            <div>
-                <h3 id="lightboxTitulo">Proyecto</h3>
-                <span id="lightboxZona">Zona</span>
-            </div>
-            <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">&times;</button>
-        </div>
-        <div class="lightbox-grid" id="lightboxGrid">
-            <!-- Las 4 fotos se insertan automáticamente -->
-        </div>
-    </div>
-</div>
-
-<!-- ============================================================
-     TESTIMONIOS (15 testimonios reales)
+     TESTIMONIOS
 ============================================================ -->
 <section class="testimonials" id="testimonios">
     <div class="container">
@@ -1696,141 +1504,108 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
             <h2>Lo que dicen quienes confiaron en nosotros</h2>
             <p>Historias reales de hogares y negocios que ya trabajan con PhoenixGas.</p>
         </div>
-
         <div class="testi-outer">
             <button class="testi-nav-btn" id="testiPrev" aria-label="Anterior">
                 <i class="fa-solid fa-chevron-left"></i>
             </button>
             <div class="testi-window">
                 <div class="testi-track" id="testiTrack">
-
-                    <!-- 1 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">El equipo llegó puntual, explicó cada paso de la instalación y al final nos mostró la prueba de presión en vivo. Quedamos muy tranquilos con la seguridad de nuestra casa.</p>
                         <div class="testi-author">Familia Quiroga</div>
                         <div class="testi-role">Instalación domiciliaria – Santa Cruz</div>
                     </div>
-
-                    <!-- 2 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Necesitábamos rediseñar toda la red de gas del restaurante sin parar la operación, amanecieron trabajando eso me sorprendió. PhoenixGas coordinó los trabajos por turnos y entregó todo certificado y dentro de plazo.</p>
                         <div class="testi-author">Carlos Méndez</div>
                         <div class="testi-role">Administrador, Restaurante Limón y Sal</div>
                     </div>
-
-                    <!-- 3 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Tuvimos una emergencia de fuga un domingo y respondieron en menos de una hora. Profesionales, ordenados y con todo el equipo necesario para resolverlo de inmediato.</p>
                         <div class="testi-author">Lourdes Aguilar</div>
                         <div class="testi-role">Administradora, Edificio Torre Sol</div>
                     </div>
-
-                    <!-- 4 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">La planta requería una instalación industrial compleja con múltiples puntos de consumo. El trabajo de la empresa fue impecable, con planos, certificados y garantía por escrito.</p>
                         <div class="testi-author">Ing. Roberto Salazar</div>
                         <div class="testi-role">Jefe de Mantenimiento, Planta Industrial Norte</div>
                     </div>
-
-                    <!-- 5 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Instalaron el gas en mi nuevo local comercial en tiempo récord. Muy contento con la calidad de los materiales y la limpieza al terminar.</p>
                         <div class="testi-author">Marcela Rojas</div>
                         <div class="testi-role">Dueña, Tienda de abarrotes "La Esquina"</div>
                     </div>
-
-                    <!-- 6 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Hicieron la revisión anual de todo el condominio. Detectaron una pequeña fuga que nadie había notado. Nos ahorraron un problema mayor.</p>
                         <div class="testi-author">Jorge Camacho</div>
                         <div class="testi-role">Presidente, Condominio Los Pinos</div>
                     </div>
-
-                    <!-- 7 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Mi cocina a gas quedó funcionando perfectamente. El técnico fue muy amable y me enseñó cómo realizar el mantenimiento básico.</p>
                         <div class="testi-author">Sra. Elena de Flores</div>
                         <div class="testi-role">Cliente residencial – Barrio San Martín</div>
                     </div>
-
-                    <!-- 8 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Excelente servicio postventa. Llamé porque tenía una duda sobre el regulador y me atendieron inmediatamente. Muy recomendables.</p>
                         <div class="testi-author">Lic. Fernando Paredes</div>
                         <div class="testi-role">Propietario, Edificio de oficinas Centro</div>
                     </div>
-
-                    <!-- 9 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Trabajaron en mi planta de alimentos durante un fin de semana para no afectar la producción. Cumplieron con los plazos y la calidad esperada.</p>
                         <div class="testi-author">Ing. Patricia Vargas</div>
                         <div class="testi-role">Gerente de Producción, Alimentos del Sur</div>
                     </div>
-
-                    <!-- 10 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Me ayudaron con la certificación de la red de gas de mi vivienda para el seguro. Rápidos, eficientes y con toda la documentación en regla.</p>
                         <div class="testi-author">David Arancibia</div>
                         <div class="testi-role">Cliente particular – Zona Norte</div>
                     </div>
-
-                    <!-- 11 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">La instalación de los calefones en los departamentos fue impecable. Los inquilinos están muy contentos con el agua caliente y la seguridad.</p>
                         <div class="testi-author">Sra. Gladys de Ribera</div>
                         <div class="testi-role">Administradora, Edificio Residencial Las Torres</div>
                     </div>
-
-                    <!-- 12 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Contraté a PhoenixGas para la red de gas de mi nuevo restaurante. El proyecto fue complejo pero lo resolvieron con mucha profesionalidad.</p>
                         <div class="testi-author">Chef Daniel Fernández</div>
                         <div class="testi-role">Restaurante "Fuego y Sabor"</div>
                     </div>
-
-                    <!-- 13 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Muy buena atención desde la cotización hasta la instalación. Tienen precios justos y cumplen lo que prometen.</p>
                         <div class="testi-author">Familia Gutiérrez</div>
                         <div class="testi-role">Instalación domiciliaria – Equipetrol</div>
                     </div>
-
-                    <!-- 14 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Llegaron a tiempo, instalaron todo en un día y dejaron todo limpio. Hasta me explicaron cómo usar el sistema de seguridad.</p>
                         <div class="testi-author">Sra. Teresa Lora</div>
                         <div class="testi-role">Cliente residencial – Barrio El Trigal</div>
                     </div>
-
-                    <!-- 15 -->
                     <div class="testi-slide">
                         <div class="testi-stars">★★★★★</div>
                         <p class="testi-quote">Tienen un servicio de emergencia rápido. Un sábado en la noche tuvimos un problema y en 40 minutos ya estaban en casa.</p>
                         <div class="testi-author">Juan Carlos Rivero</div>
                         <div class="testi-role">Propietario, Vivienda en Urubó</div>
                     </div>
-
                 </div><!-- fin testi-track -->
-            </div><!-- fin testi-window -->
+            </div>
             <button class="testi-nav-btn" id="testiNext" aria-label="Siguiente">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
-        </div><!-- fin testi-outer -->
-
+        </div>
         <div class="testi-dots" id="testiDots"></div>
     </div>
 </section>
@@ -1847,67 +1622,32 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
         </div>
         <div class="faq-list">
             <div class="faq-item reveal reveal-delay-1">
-                <button class="faq-question">
-                    ¿Cuánto tarda una instalación domiciliaria?
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>Una instalación residencial estándar (cocina, calefón y termotanque) suele completarse en 1 a 2 días. Para proyectos comerciales o industriales, el plazo se define tras la visita de evaluación.</p>
-                </div>
+                <button class="faq-question">¿Cuánto tarda una instalación domiciliaria?<i class="fa-solid fa-plus"></i></button>
+                <div class="faq-answer"><p>Una instalación residencial estándar (cocina, calefón y termotanque) suele completarse en 1 a 2 días. Para proyectos comerciales o industriales, el plazo se define tras la visita de evaluación.</p></div>
             </div>
             <div class="faq-item reveal reveal-delay-2">
-                <button class="faq-question">
-                    ¿La inspección inicial tiene costo?
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>No. La inspección y evaluación inicial para cotizar el trabajo es completamente gratuita. Solo se cobra una vez que apruebas el presupuesto y se inicia el trabajo.</p>
-                </div>
+                <button class="faq-question">¿La inspección inicial tiene costo?<i class="fa-solid fa-plus"></i></button>
+                <div class="faq-answer"><p>No. La inspección y evaluación inicial para cotizar el trabajo es completamente gratuita. Solo se cobra una vez que apruebas el presupuesto y se inicia el trabajo.</p></div>
             </div>
             <div class="faq-item reveal reveal-delay-3">
-                <button class="faq-question">
-                    ¿Entregan certificado de prueba de hermeticidad?
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>Sí. Todas nuestras instalaciones incluyen una prueba de presión documentada, con certificado que puedes presentar ante tu compañía de seguros, municipio o entidad reguladora.</p>
-                </div>
+                <button class="faq-question">¿Entregan certificado de prueba de hermeticidad?<i class="fa-solid fa-plus"></i></button>
+                <div class="faq-answer"><p>Sí. Todas nuestras instalaciones incluyen una prueba de presión documentada, con certificado que puedes presentar ante tu compañía de seguros, municipio o entidad reguladora.</p></div>
             </div>
             <div class="faq-item reveal reveal-delay-4">
-                <button class="faq-question">
-                    ¿Qué garantía ofrecen sobre los trabajos realizados?
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>Ofrecemos garantía escrita sobre mano de obra y materiales instalados. El plazo y condiciones se detallan en el comprobante de servicio entregado al finalizar el trabajo.</p>
-                </div>
+                <button class="faq-question">¿Qué garantía ofrecen sobre los trabajos realizados?<i class="fa-solid fa-plus"></i></button>
+                <div class="faq-answer"><p>Ofrecemos garantía escrita sobre mano de obra y materiales instalados. El plazo y condiciones se detallan en el comprobante de servicio entregado al finalizar el trabajo.</p></div>
             </div>
             <div class="faq-item reveal reveal-delay-5">
-                <button class="faq-question">
-                    ¿Atienden emergencias fuera de horario?
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>Sí, contamos con atención de emergencias disponible los 7 días de la semana, para fugas, olores a gas o fallas urgentes en el suministro.</p>
-                </div>
-            </div>
-            <div class="faq-item reveal reveal-delay-6">
-                <button class="faq-question">
-                    ¿Trabajan con GLP y gas natural?
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>Sí, diseñamos e instalamos redes tanto para gas licuado de petróleo (GLP) como para gas natural domiciliario, adaptando materiales y reguladores según el tipo de suministro de tu zona.</p>
-                </div>
+                <button class="faq-question">¿Atienden emergencias fuera de horario?<i class="fa-solid fa-plus"></i></button>
+                <div class="faq-answer"><p>Sí, contamos con atención de emergencias disponible los 7 días de la semana, para fugas, olores a gas o fallas urgentes en el suministro.</p></div>
             </div>
             <div class="faq-item reveal">
-                <button class="faq-question">
-                    ¿Cómo se realiza el pago?
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>Aceptamos Qr, efectivo y transferencia bancaria. Todos los detalles se especifican antes de iniciar el trabajo.</p>
-                </div>
+                <button class="faq-question">¿Trabajan con GLP y gas natural?<i class="fa-solid fa-plus"></i></button>
+                <div class="faq-answer"><p>Sí, diseñamos e instalamos redes tanto para gas licuado de petróleo (GLP) como para gas natural domiciliario, adaptando materiales y reguladores según el tipo de suministro de tu zona.</p></div>
+            </div>
+            <div class="faq-item reveal">
+                <button class="faq-question">¿Cómo se realiza el pago?<i class="fa-solid fa-plus"></i></button>
+                <div class="faq-answer"><p>Aceptamos QR, efectivo y transferencia bancaria. Todos los detalles se especifican antes de iniciar el trabajo.</p></div>
             </div>
         </div>
     </div>
@@ -1946,7 +1686,7 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                 <div class="footer-social">
                     <a href="https://www.facebook.com/profile.php?id=100067083035760" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="mailto:phoenixgas01@gmail.com?subject=Consulta%20sobre%20instalaci%C3%B3n%20de%20gas" aria-label="Correo electrónico"><i class="fa-regular fa-envelope"></i></a>
-                    <a href="https://wa.link/uqmwdd" onclick="fbq('track', 'Contact');"target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://wa.link/uqmwdd" onclick="fbq('track', 'Contact');" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
                 </div>
             </div>
             <div class="footer-col">
@@ -1973,17 +1713,17 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                 <ul>
                     <li><i class="fa-solid fa-phone"></i>&nbsp; +591 78523714</li>
                     <li><i class="fa-brands fa-whatsapp"></i>&nbsp;
-                        <a href="https://wa.link/uqmwdd" onclick="fbq('track', 'Contact');"target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a>
+                        <a href="https://wa.link/uqmwdd" onclick="fbq('track', 'Contact');" target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a>
                     </li>
                     <li><i class="fa-solid fa-envelope"></i>&nbsp; phoenixgas01@gmail.com</li>
                     <li><i class="fa-solid fa-location-dot"></i>&nbsp; Santa Cruz de la Sierra, Bolivia</li>
                 </ul>
             </div>
         </div>
-
         <div class="footer-bottom">
             <p>&copy; 2018-2026 PhoenixGas Instalaciones Profesionales. Todos los derechos reservados.</p>
             <div class="footer-legal-links">
+                <!-- CORREGIDO: usan data-modal que coincide con el JS unificado -->
                 <a href="#" data-modal="terminos">Términos y condiciones</a>
                 <a href="#" data-modal="privacidad">Política de privacidad</a>
                 <a href="#" data-modal="garantia">Política de garantía</a>
@@ -1993,7 +1733,8 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
 </footer>
 
 <!-- ============================================================
-     MODALES LEGALES (ventanas superpuestas)
+     MODALES LEGALES
+     CORREGIDO: IDs coinciden con data-modal del footer (modal-terminos, etc.)
 ============================================================ -->
 
 <!-- MODAL: Términos y condiciones -->
@@ -2006,13 +1747,10 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
         <div class="modal-body">
             <h3>1. Alcance del servicio</h3>
             <p>PhoenixGas presta servicios de diseño, instalación, mantenimiento, reparación y certificación de redes de gas domiciliarias, comerciales e industriales, dentro del territorio boliviano y bajo la normativa técnica vigente.</p>
-
             <h3>2. Cotizaciones y presupuestos</h3>
             <p>La inspección inicial es gratuita. Toda cotización tiene una vigencia de 15 días calendario. Los precios pueden variar si durante la ejecución se identifican condiciones no visibles al momento de la inspección. En tal caso, se informará al cliente antes de continuar.</p>
-
             <h3>3. Condiciones de pago</h3>
-            <p>El pago puede realizarse mediante Qr, efectivo o transferencia bancaria.</p>
-
+            <p>El pago puede realizarse mediante QR, efectivo o transferencia bancaria.</p>
             <h3>4. Garantía</h3>
             <p>PhoenixGas garantiza la mano de obra y los materiales instalados por un período de 36 meses desde la fecha de entrega, cubriendo defectos de instalación, fugas o fallas atribuibles al trabajo realizado. La garantía no cubre:</p>
             <ul>
@@ -2021,25 +1759,18 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                 <li>Daños causados por fenómenos naturales o fuerza mayor.</li>
                 <li>Equipos no instalados por PhoenixGas.</li>
             </ul>
-
             <h3>5. Responsabilidades del cliente</h3>
             <p>El cliente se compromete a brindar acceso seguro al área de trabajo e informar sobre instalaciones preexistentes que puedan afectar la obra.</p>
-
             <h3>6. Cancelaciones y reprogramaciones</h3>
             <p>Las citas pueden reprogramarse sin costo si se notifica con al menos 12 horas de anticipación. Cancelaciones con menos de 12 horas de aviso pueden generar un cargo por desplazamiento.</p>
-
             <h3>7. Emergencias</h3>
-            <p>El servicio de emergencias 24 horas atiende casos de fuga, olor a gas o riesgo inminente. El costo de atención fuera de horario regular puede incluir un recargo, el cual se comunica al cliente antes del desplazamiento.</p>
-
+            <p>El servicio de emergencias atiende casos de fuga, olor a gas o riesgo inminente. El costo de atención fuera de horario regular puede incluir un recargo, el cual se comunica al cliente antes del desplazamiento.</p>
             <h3>8. Modificaciones de estos términos</h3>
             <p>PhoenixGas podrá actualizar estos términos en cualquier momento. La versión vigente será siempre la publicada en este sitio web.</p>
-
             <h3>9. Contacto</h3>
             <p>Para consultas, escríbenos a phoenixgas01@gmail.com o por WhatsApp.</p>
         </div>
-        <div class="modal-footer">
-            <span>Última actualización: junio de 2026</span>
-        </div>
+        <div class="modal-footer"><span>Última actualización: junio de 2026</span></div>
     </div>
 </div>
 
@@ -2053,7 +1784,6 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
         <div class="modal-body">
             <h3>1. Información que recopilamos</h3>
             <p>Cuando te comunicas con nosotros por WhatsApp, llamadas, formularios o correo, podemos recopilar: nombre, teléfono, correo electrónico, dirección del inmueble y detalles del servicio solicitado.</p>
-
             <h3>2. Uso de la información</h3>
             <p>Utilizamos tus datos exclusivamente para:</p>
             <ul>
@@ -2062,25 +1792,18 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                 <li>Brindar atención de emergencias y seguimiento postventa.</li>
                 <li>Enviar comunicaciones relacionadas con tu servicio.</li>
             </ul>
-
             <h3>3. Compartición con terceros</h3>
             <p>No vendemos ni alquilamos tu información. Podemos compartir datos con proveedores solo cuando sea necesario para completar el servicio, siempre bajo confidencialidad.</p>
-
             <h3>4. Conservación</h3>
             <p>Conservamos los registros durante el tiempo necesario para cumplir obligaciones legales o de garantía.</p>
-
             <h3>5. Seguridad</h3>
             <p>Aplicamos medidas razonables para proteger tus datos contra accesos no autorizados o pérdida.</p>
-
             <h3>6. Tus derechos</h3>
             <p>Puedes solicitar que te informemos qué datos tenemos, que los corrijamos o que los eliminemos, salvo que exista una obligación legal de conservarlos.</p>
-
             <h3>7. Contacto</h3>
             <p>Preguntas sobre privacidad: phoenixgas01@gmail.com</p>
         </div>
-        <div class="modal-footer">
-            <span>Última actualización: junio de 2026</span>
-        </div>
+        <div class="modal-footer"><span>Última actualización: junio de 2026</span></div>
     </div>
 </div>
 
@@ -2088,19 +1811,16 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
 <div class="modal-overlay" id="modal-garantia">
     <div class="modal-container">
         <div class="modal-header">
-            <h2><i class="fa-regular fa-shield-halved"></i> Política de garantía</h2>
+            <h2><i class="fa-solid fa-shield-halved"></i> Política de garantía</h2>
             <button class="modal-close" data-close-modal="garantia">&times;</button>
         </div>
         <div class="modal-body">
             <h3>1. Cobertura general</h3>
             <p>Todo trabajo ejecutado por PhoenixGas cuenta con garantía de 36 meses sobre mano de obra, y según el fabricante, sobre materiales y componentes instalados.</p>
-
             <h3>2. Cómo activar la garantía</h3>
             <p>Conserva el comprobante de servicio o certificado de prueba y reporta el inconveniente por WhatsApp, llamada o correo, indicando la fecha del servicio y descripción del problema.</p>
-
             <h3>3. Tiempo de respuesta</h3>
             <p>Para reclamos relacionados con fugas o fallas de seguridad: atención en las 24 horas siguientes. Para ajustes menores: visita en hasta 5 días hábiles.</p>
-
             <h3>4. Exclusiones</h3>
             <p>La garantía no aplica en:</p>
             <ul>
@@ -2109,43 +1829,38 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
                 <li>Fuerza mayor: sismos, incendios externos, inundaciones.</li>
                 <li>Desgaste normal de componentes (empaques, mangueras).</li>
             </ul>
-
             <h3>5. Artefactos de terceros</h3>
             <p>Los equipos no provistos por PhoenixGas mantienen la garantía de su fabricante. PhoenixGas garantiza únicamente la correcta conexión e instalación de dichos equipos.</p>
-
             <h3>6. Reclamos no cubiertos</h3>
             <p>Si el problema no está cubierto, se informará el diagnóstico y se ofrecerá una cotización para la reparación, sin obligación de aceptarla.</p>
-
             <h3>7. Contacto</h3>
-            <p>Para activar tu garantía: WhatsApp.</p>
+            <p>Para activar tu garantía: WhatsApp o phoenixgas01@gmail.com</p>
         </div>
-        <div class="modal-footer">
-            <span>Última actualización: junio de 2026</span>
-        </div>
+        <div class="modal-footer"><span>Última actualización: junio de 2026</span></div>
     </div>
 </div>
 
+<!-- ============================================================
+     JAVASCRIPT — todo corregido y unificado
+============================================================ -->
 <script>
-(function() {
+(function () {
     'use strict';
 
-    /* ==========================================================
-       LIGHTBOX — Overlay DOM (sin window.open)
-       Esto reemplaza cualquier window.open() que tenías antes.
-       El lightbox se abre como capa sobre la misma página.
-    ========================================================== */
-    var lightbox = document.getElementById('lightbox');
-    var lbTitle  = document.getElementById('lbTitle');
-    var lbZone   = document.getElementById('lbZone');
-    var lbGrid   = document.getElementById('lbGrid');
-    var lbClose  = document.getElementById('lbClose');
+    /* ============================================================
+       LIGHTBOX — único, sin duplicado
+    ============================================================ */
+    var lightbox     = document.getElementById('lightbox');
+    var lbTitle      = document.getElementById('lbTitle');
+    var lbZone       = document.getElementById('lbZone');
+    var lbGrid       = document.getElementById('lbGrid');
+    var lbClose      = document.getElementById('lbClose');
     var lightboxOpen = false;
 
-    // Al hacer clic en cualquier tarjeta de proyecto
-    document.querySelectorAll('.proj-card').forEach(function(card) {
-        card.addEventListener('click', function() {
+    document.querySelectorAll('.proj-card').forEach(function (card) {
+        card.addEventListener('click', function () {
             var titulo = card.getAttribute('data-titulo') || 'Proyecto';
-            var zona   = card.getAttribute('data-zona') || '';
+            var zona   = card.getAttribute('data-zona')   || '';
             var images = card.querySelectorAll('.proj-mosaic img');
 
             lbTitle.textContent = titulo;
@@ -2155,12 +1870,12 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
             if (images.length === 0) {
                 lbGrid.innerHTML = '<div class="lb-ph lb-empty"><i class="fa-solid fa-image"></i></div>';
             } else {
-                images.forEach(function(img) {
-                    var div = document.createElement('div');
+                images.forEach(function (img) {
+                    var div    = document.createElement('div');
                     div.className = 'lb-ph';
                     var newImg = document.createElement('img');
-                    newImg.src = img.src;
-                    newImg.alt = img.alt;
+                    newImg.src     = img.src;
+                    newImg.alt     = img.alt;
                     newImg.loading = 'lazy';
                     div.appendChild(newImg);
                     lbGrid.appendChild(div);
@@ -2170,8 +1885,6 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
             lightbox.classList.add('open');
             lightboxOpen = true;
             document.body.style.overflow = 'hidden';
-
-            // Agregar entrada al historial para que "atrás" cierre el lightbox
             history.pushState({ lightbox: true }, '');
         });
     });
@@ -2183,343 +1896,265 @@ src="https://www.facebook.com/tr?id=1542492544236198&ev=PageView&noscript=1"
     }
 
     lbClose.addEventListener('click', closeLightbox);
-
-    // Cerrar al hacer clic en el fondo oscuro
-    lightbox.addEventListener('click', function(e) {
+    lightbox.addEventListener('click', function (e) {
         if (e.target === lightbox) closeLightbox();
     });
+    window.addEventListener('popstate', function () {
+        if (lightboxOpen) { closeLightbox(); history.pushState({ lightbox: false }, ''); }
+    });
+    history.replaceState({ lightbox: false }, '');
 
-    // Cerrar con tecla Escape
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && lightboxOpen) closeLightbox();
+    /* ============================================================
+       MODALES LEGALES — CORREGIDO: listener unificado con data-modal
+    ============================================================ */
+    // Abrir modales desde cualquier enlace con data-modal="...
+    document.querySelectorAll('[data-modal]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            var modalId = 'modal-' + link.getAttribute('data-modal');
+            var modal   = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
     });
 
-    // BOTÓN "ATRÁS" DEL CELULAR — cierra el lightbox en vez de salir de la página
-    window.addEventListener('popstate', function() {
-        if (lightboxOpen) {
-            closeLightbox();
-            history.pushState({ lightbox: false }, '');
+    // Cerrar modales con el botón × (data-close-modal="...")
+    document.querySelectorAll('[data-close-modal]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var modalId = 'modal-' + btn.getAttribute('data-close-modal');
+            var modal   = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                if (!lightboxOpen) document.body.style.overflow = '';
+            }
+        });
+    });
+
+    // Cerrar modales al hacer clic en el fondo oscuro
+    document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) {
+                overlay.classList.remove('active');
+                if (!lightboxOpen) document.body.style.overflow = '';
+            }
+        });
+    });
+
+    // Cerrar modales y lightbox con Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            if (lightboxOpen) { closeLightbox(); return; }
+            document.querySelectorAll('.modal-overlay.active').forEach(function (m) {
+                m.classList.remove('active');
+            });
+            document.body.style.overflow = '';
         }
     });
 
-    // Inicializar estado del historial
-    history.replaceState({ lightbox: false }, '');
-
-    /* ==========================================================
+    /* ============================================================
        CARRUSEL DE PROYECTOS
-    ========================================================== */
+    ============================================================ */
     var projTrack = document.getElementById('projTrack');
     var projCards = projTrack.querySelectorAll('.proj-card');
     var projIndex = 0;
-    var projAutoplayTimer = null;
+    var projTimer = null;
 
-    function getVisibleCards() {
+    function getVisible() {
         var w = window.innerWidth;
         if (w <= 620) return 1;
         if (w <= 980) return 2;
         return 3;
     }
+    function getMaxIndex() { return Math.max(0, projCards.length - getVisible()); }
 
-    function getMaxIndex() {
-        return Math.max(0, projCards.length - getVisibleCards());
-    }
-
-    function slideProjects(direction) {
+    function slideProjTo(idx) {
         var max = getMaxIndex();
-        projIndex += direction;
-        if (projIndex < 0) projIndex = max;
-        if (projIndex > max) projIndex = 0;
-        var cardWidth = projCards[0].offsetWidth + 22;
+        if (idx < 0) idx = max;
+        if (idx > max) idx = 0;
+        projIndex = idx;
+        var cardW = projCards[0].offsetWidth + 22;
         projTrack.style.transition = 'transform 0.5s ease';
-        projTrack.style.transform = 'translateX(' + (-projIndex * cardWidth) + 'px)';
+        projTrack.style.transform  = 'translateX(' + (-projIndex * cardW) + 'px)';
     }
 
-    document.getElementById('projPrev').addEventListener('click', function() {
-        slideProjects(-1);
-        resetProjAutoplay();
-    });
-    document.getElementById('projNext').addEventListener('click', function() {
-        slideProjects(1);
-        resetProjAutoplay();
-    });
+    function startProjAutoplay() { projTimer = setInterval(function () { slideProjTo(projIndex + 1); }, 4500); }
+    function resetProjAutoplay() { clearInterval(projTimer); startProjAutoplay(); }
 
-    function startProjAutoplay() {
-        projAutoplayTimer = setInterval(function() { slideProjects(1); }, 4500);
-    }
-    function resetProjAutoplay() {
-        clearInterval(projAutoplayTimer);
-        startProjAutoplay();
-    }
+    document.getElementById('projPrev').addEventListener('click', function () { slideProjTo(projIndex - 1); resetProjAutoplay(); });
+    document.getElementById('projNext').addEventListener('click', function () { slideProjTo(projIndex + 1); resetProjAutoplay(); });
+
+    projTrack.addEventListener('mouseenter', function () { clearInterval(projTimer); });
+    projTrack.addEventListener('mouseleave', startProjAutoplay);
     startProjAutoplay();
 
-    // Pausar autoplay al pasar el mouse
-    projTrack.addEventListener('mouseenter', function() { clearInterval(projAutoplayTimer); });
-    projTrack.addEventListener('mouseleave', function() { startProjAutoplay(); });
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+            projIndex = Math.min(projIndex, getMaxIndex());
+            var cardW = projCards[0].offsetWidth + 22;
+            projTrack.style.transition = 'none';
+            projTrack.style.transform  = 'translateX(' + (-projIndex * cardW) + 'px)';
+        }, 150);
+    });
 
-    /* ==========================================================
+    /* ============================================================
        CARRUSEL DE TESTIMONIOS
-    ========================================================== */
+    ============================================================ */
     var testiTrack = document.getElementById('testiTrack');
     var testiSlides = testiTrack.querySelectorAll('.testi-slide');
-    var testiIndex = 0;
-    var testiDotsContainer = document.getElementById('testiDots');
+    var testiDots   = document.getElementById('testiDots');
+    var testiIndex  = 0;
 
-    // Crear los puntos de navegación
     for (var i = 0; i < testiSlides.length; i++) {
         var dot = document.createElement('button');
         dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
         dot.setAttribute('aria-label', 'Testimonio ' + (i + 1));
         dot.dataset.index = i;
-        testiDotsContainer.appendChild(dot);
+        testiDots.appendChild(dot);
     }
 
-    function slideTestimonial(index) {
-        if (index < 0) index = testiSlides.length - 1;
-        if (index >= testiSlides.length) index = 0;
-        testiIndex = index;
+    function slideTesti(idx) {
+        if (idx < 0) idx = testiSlides.length - 1;
+        if (idx >= testiSlides.length) idx = 0;
+        testiIndex = idx;
         testiTrack.style.transition = 'transform 0.5s ease';
-        testiTrack.style.transform = 'translateX(' + (-testiIndex * 100) + '%)';
-        testiDotsContainer.querySelectorAll('.testi-dot').forEach(function(d, idx) {
-            d.classList.toggle('active', idx === testiIndex);
+        testiTrack.style.transform  = 'translateX(' + (-testiIndex * 100) + '%)';
+        testiDots.querySelectorAll('.testi-dot').forEach(function (d, j) {
+            d.classList.toggle('active', j === testiIndex);
         });
     }
 
-    document.getElementById('testiPrev').addEventListener('click', function() {
-        slideTestimonial(testiIndex - 1);
+    document.getElementById('testiPrev').addEventListener('click', function () { slideTesti(testiIndex - 1); });
+    document.getElementById('testiNext').addEventListener('click', function () { slideTesti(testiIndex + 1); });
+    testiDots.addEventListener('click', function (e) {
+        if (e.target.classList.contains('testi-dot')) slideTesti(parseInt(e.target.dataset.index));
     });
-    document.getElementById('testiNext').addEventListener('click', function() {
-        slideTestimonial(testiIndex + 1);
-    });
+    setInterval(function () { slideTesti(testiIndex + 1); }, 6000);
 
-    testiDotsContainer.addEventListener('click', function(e) {
-        if (e.target.classList.contains('testi-dot')) {
-            slideTestimonial(parseInt(e.target.dataset.index));
-        }
-    });
-
-    // Autoplay testimonios
-    setInterval(function() { slideTestimonial(testiIndex + 1); }, 6000);
-
-    /* ==========================================================
-       FAQ — Acordeón
-    ========================================================== */
-    document.querySelectorAll('.faq-question').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            var item = btn.parentElement;
+    /* ============================================================
+       FAQ ACORDEÓN
+    ============================================================ */
+    document.querySelectorAll('.faq-question').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var item    = btn.parentElement;
             var wasOpen = item.classList.contains('open');
-
-            // Cerrar todas las demás
-            document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
-                openItem.classList.remove('open');
-            });
-
-            // Toggle la actual
+            document.querySelectorAll('.faq-item.open').forEach(function (o) { o.classList.remove('open'); });
             if (!wasOpen) item.classList.add('open');
         });
     });
 
-    /* ==========================================================
-       MODALES LEGALES (Términos y Privacidad)
-    ========================================================== */
-    document.getElementById('openTerminos').addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('modalTerminos').classList.add('active');
-        document.body.style.overflow = 'hidden';
-    });
-    document.getElementById('openPrivacidad').addEventListener('click', function(e) {
-        e.preventDefault();
-        document.getElementById('modalPrivacidad').classList.add('active');
-        document.body.style.overflow = 'hidden';
-    });
-
-    // Cerrar modales al hacer clic en el fondo
-    document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
-        overlay.addEventListener('click', function(e) {
-            if (e.target === overlay) {
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-    });
-
-    // Cerrar modales con Escape
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.modal-overlay.active').forEach(function(m) {
-                m.classList.remove('active');
-            });
-            if (!lightboxOpen) document.body.style.overflow = '';
-        }
-    });
-
-    /* ==========================================================
-       RECALCULAR CARRUSEL AL GIRAR EL CELULAR
-    ========================================================== */
-    var resizeTimer;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            projIndex = Math.min(projIndex, getMaxIndex());
-            var cardWidth = projCards[0].offsetWidth + 22;
-            projTrack.style.transition = 'none';
-            projTrack.style.transform = 'translateX(' + (-projIndex * cardWidth) + 'px)';
-        }, 150);
-    });
-     /* ==========================================================
-       EFECTO 1 — SCROLL REVEAL
-    ========================================================== */
-    var revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
+    var revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
     function checkReveal() {
-        var windowHeight = window.innerHeight;
-        revealElements.forEach(function(el) {
-            var top = el.getBoundingClientRect().top;
-            if (top < windowHeight - 80) {
-                el.classList.add('visible');
-            }
+        var wh = window.innerHeight;
+        revealEls.forEach(function (el) {
+            if (el.getBoundingClientRect().top < wh - 80) el.classList.add('visible');
         });
     }
-
-    // Ejecutar al cargar y al hacer scroll
     checkReveal();
     window.addEventListener('scroll', checkReveal, { passive: true });
-        /* ==========================================================
-       EFECTO 2 — CONTADORES ANIMADOS
-    ========================================================== */
-    var countersAlreadyAnimated = false;
 
+    /* ============================================================
+       CONTADORES ANIMADOS
+    ============================================================ */
+    var countersRan = false;
     function animateCounters() {
-        if (countersAlreadyAnimated) return;
-
-        var statsSection = document.querySelector('.hero-stats');
-        if (!statsSection) return;
-
-        var rect = statsSection.getBoundingClientRect();
-        if (rect.top > window.innerHeight) return;
-
-        countersAlreadyAnimated = true;
-
-        var counters = document.querySelectorAll('.hero-stat .num');
-        counters.forEach(function(counter) {
-            var text = counter.textContent.trim();
-            // Extraer el número y el sufijo ("7+", "100%", "12h")
-            var match = text.match(/^([\d.]+)(.*)$/);
+        if (countersRan) return;
+        var stats = document.querySelector('.hero-stats');
+        if (!stats || stats.getBoundingClientRect().top > window.innerHeight) return;
+        countersRan = true;
+        document.querySelectorAll('.hero-stat .num').forEach(function (counter) {
+            var text   = counter.textContent.trim();
+            var match  = text.match(/^([\d.]+)(.*)$/);
             if (!match) return;
-
-            var target = parseFloat(match[1]);
-            var suffix = match[2];
-            var isDecimal = text.indexOf('.') !== -1;
-            var duration = 1800; // milisegundos
-            var startTime = null;
-
-            function step(timestamp) {
-                if (!startTime) startTime = timestamp;
-                var progress = Math.min((timestamp - startTime) / duration, 1);
-                // Easing: ease-out cúbico
-                var eased = 1 - Math.pow(1 - progress, 3);
-                var current = eased * target;
-
-                if (isDecimal) {
-                    counter.innerHTML = '<span>' + current.toFixed(1) + '</span>' + suffix;
-                } else {
-                    counter.innerHTML = '<span>' + Math.floor(current) + '</span>' + suffix;
-                }
-
-                if (progress < 1) {
-                    requestAnimationFrame(step);
-                }
+            var target  = parseFloat(match[1]);
+            var suffix  = match[2];
+            var isDec   = text.indexOf('.') !== -1;
+            var start   = null;
+            var dur     = 1800;
+            function step(ts) {
+                if (!start) start = ts;
+                var p = Math.min((ts - start) / dur, 1);
+                var e = 1 - Math.pow(1 - p, 3);
+                var v = e * target;
+                counter.innerHTML = '<span>' + (isDec ? v.toFixed(1) : Math.floor(v)) + '</span>' + suffix;
+                if (p < 1) requestAnimationFrame(step);
             }
-
             requestAnimationFrame(step);
         });
     }
-
     animateCounters();
     window.addEventListener('scroll', animateCounters, { passive: true });
-        /* ==========================================================
-       EFECTO 3 — SPOTLIGHT EN TARJETAS DE SERVICIO
-    ========================================================== */
-    document.querySelectorAll('.service-card').forEach(function(card) {
-        card.addEventListener('mousemove', function(e) {
-            var rect = card.getBoundingClientRect();
-            var x = e.clientX - rect.left;
-            var y = e.clientY - rect.top;
-            card.style.setProperty('--spot-x', x + 'px');
-            card.style.setProperty('--spot-y', y + 'px');
+
+    /* ============================================================
+       SPOTLIGHT EN TARJETAS DE SERVICIO
+    ============================================================ */
+    document.querySelectorAll('.service-card').forEach(function (card) {
+        card.addEventListener('mousemove', function (e) {
+            var r = card.getBoundingClientRect();
+            card.style.setProperty('--spot-x', (e.clientX - r.left) + 'px');
+            card.style.setProperty('--spot-y', (e.clientY - r.top) + 'px');
             card.style.setProperty('--spot-opacity', '1');
         });
-        card.addEventListener('mouseleave', function() {
+        card.addEventListener('mouseleave', function () {
             card.style.setProperty('--spot-opacity', '0');
         });
     });
-        /* ==========================================================
-       EFECTO 4 — LÍNEA DE PROGRESO DE SCROLL
-    ========================================================== */
-    function updateScrollProgress() {
-        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-        document.documentElement.style.setProperty('--scroll-progress', progress + '%');
-    }
 
-    updateScrollProgress();
-    window.addEventListener('scroll', updateScrollProgress, { passive: true });
-        /* ==========================================================
-       EFECTO 5 — PARTÍCULAS EN EL HERO
-    ========================================================== */
-    (function createParticles() {
+    /* ============================================================
+       BARRA DE PROGRESO DE SCROLL
+    ============================================================ */
+    function updateProgress() {
+        var st  = window.pageYOffset || document.documentElement.scrollTop;
+        var dh  = document.documentElement.scrollHeight - window.innerHeight;
+        var pct = dh > 0 ? (st / dh) * 100 : 0;
+        document.documentElement.style.setProperty('--scroll-progress', pct + '%');
+    }
+    updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
+
+    /* ============================================================
+       PARTÍCULAS EN EL HERO
+    ============================================================ */
+    (function () {
         var container = document.getElementById('heroParticles');
         if (!container) return;
-
-        var particleCount = 18;
-
-        for (var i = 0; i < particleCount; i++) {
-            var p = document.createElement('div');
+        for (var i = 0; i < 18; i++) {
+            var p    = document.createElement('div');
             p.className = 'hero-particle';
-
-            // Posición horizontal aleatoria
-            p.style.left = (Math.random() * 100) + '%';
-            // Empezar desde abajo
-            p.style.bottom = (-10 - Math.random() * 20) + '%';
-            // Tamaño ligeramente variable
-            var size = 2 + Math.random() * 3;
-            p.style.width = size + 'px';
-            p.style.height = size + 'px';
-            // Duración aleatoria (lento = más elegante)
+            p.style.left              = (Math.random() * 100) + '%';
+            p.style.bottom            = (-10 - Math.random() * 20) + '%';
+            var sz   = 2 + Math.random() * 3;
+            p.style.width             = sz + 'px';
+            p.style.height            = sz + 'px';
             p.style.animationDuration = (8 + Math.random() * 14) + 's';
-            // Retraso aleatorio para que no salgan todas a la vez
-            p.style.animationDelay = (Math.random() * 10) + 's';
-            // Opacidad base variable
-            p.style.background = 'rgba(255, 179, 138, ' + (0.15 + Math.random() * 0.25) + ')';
-
+            p.style.animationDelay    = (Math.random() * 10) + 's';
+            p.style.background        = 'rgba(255,179,138,' + (0.15 + Math.random() * 0.25) + ')';
             container.appendChild(p);
         }
     })();
-        /* ==========================================================
-       EFECTO 6 — TILT 3D SUTIL EN PROYECTOS
-    ========================================================== */
-    document.querySelectorAll('.proj-card').forEach(function(card) {
-        card.addEventListener('mousemove', function(e) {
-            var rect = card.getBoundingClientRect();
-            var x = e.clientX - rect.left;
-            var y = e.clientY - rect.top;
-            var centerX = rect.width / 2;
-            var centerY = rect.height / 2;
 
-            // Inclinación máxima de solo 3 grados (sutil)
-            var rotateY = ((x - centerX) / centerX) * 3;
-            var rotateX = ((centerY - y) / centerY) * 3;
-
-            card.style.transform = 'translateY(-6px) perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+    /* ============================================================
+       TILT 3D EN TARJETAS DE PROYECTO
+    ============================================================ */
+    document.querySelectorAll('.proj-card').forEach(function (card) {
+        card.addEventListener('mousemove', function (e) {
+            var r  = card.getBoundingClientRect();
+            var rx = ((r.height / 2) - (e.clientY - r.top))  / (r.height / 2) * 3;
+            var ry = ((e.clientX - r.left) - r.width / 2) / (r.width / 2)  * 3;
+            card.style.transform = 'translateY(-6px) perspective(800px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
         });
-
-        card.addEventListener('mouseleave', function() {
+        card.addEventListener('mouseleave', function () {
             card.style.transform = 'translateY(0) perspective(800px) rotateX(0) rotateY(0)';
         });
     });
 
 })();
-       
 </script>
 
 </body>
